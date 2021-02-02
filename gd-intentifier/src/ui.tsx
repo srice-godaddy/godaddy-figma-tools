@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import './ui.css'
-import useFigmaMessage from "./hooks/use-figma-message";
+import useFigmaMessage from "./ui/hooks/use-figma-message";
 
 declare function require(path: string): any
 
@@ -12,7 +12,9 @@ function App() {
     const selectionMessage = useFigmaMessage('selectionChange', onSelectionChange);
 
     React.useEffect(() => {
-        console.log(selection);
+        if (selection) {
+            console.log(selection[0]?.textStyleId);
+        }
     }, [selection]);
 
     function getSelection() {

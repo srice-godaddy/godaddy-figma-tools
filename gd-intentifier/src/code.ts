@@ -1,29 +1,23 @@
 /// <reference path="../node_modules/@figma/plugin-typings/index.d.ts" />
 
+import IntentRecommendationService from "./code/services/intent-recommendation-service";
+import {IntentStylesService} from "./code/services/intent-styles-service";
+
+const textStyles = figma.getLocalTextStyles();
+const paintStyles = figma.getLocalPaintStyles();
+const intentStylesService = new IntentStylesService({ textStyles, paintStyles });
+const intentRecommendationService = new IntentRecommendationService(intentStylesService.getValidIntentStyles());
+
+console.log({ paintStyles: paintStyles.map(style => style.name), textStyles: textStyles.map(style => style.name) });
+
 figma.showUI(__html__);
 
+// TODO When to unbind event?
 figma.on('selectionchange', () => {
-    figma.ui.postMessage({
-        type: 'selectionChange',
-        selection: figma.currentPage.selection
+    const selectionRecommendations = intentRecommendationService.getRecommendedSelectionStyles(figma.currentPage.selection);
+
+    console.log({
+        selection: figma.currentPage.selection,
+        selectionRecommendations
     });
 })
-
-figma.ui.onmessage = (msg) => {
-    if (msg.type === "create-rectangles") {
-        const nodes = [];
-
-        for (let i = 0; i < msg.count; i++) {
-            const rect = figma.createRectangle();
-            rect.x = i * 150;
-            rect.fills = [{type: "SOLID", color: {r: 1, g: 0.5, b: 0}}];
-            figma.currentPage.appendChild(rect);
-            nodes.push(rect);
-        }
-
-        figma.currentPage.selection = nodes;
-        figma.viewport.scrollAndZoomIntoView(nodes);
-    }
-
-    figma.closePlugin();
-};
