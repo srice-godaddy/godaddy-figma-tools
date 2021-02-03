@@ -1,5 +1,6 @@
 import {IntentStylesService} from "./intent-styles-service";
 import {figmaSolidPaintToRgb} from "../utils/color";
+import {StyleIdsType} from "../../ui/components/intent-node-recommendations";
 
 const TextCaseTransform = {
     ORIGINAL: 'none',
@@ -21,38 +22,50 @@ export default class StyleTransformService {
         this.intentStyles = config.intentStyles;
     }
 
-    toPresentation(style: PaintStyle | TextStyle, as: 'fillPaint' | 'textFillPaint' = 'fillPaint') {
+    toPresentation(style: PaintStyle | TextStyle, isForeground = false) {
         if (style.type === 'PAINT') {
+            const styleIds: StyleIdsType = {};
             const stylePaint = ((style as PaintStyle)?.paints?.[0] as SolidPaint);
 
-            if (as === 'fillPaint') {
+            if (!isForeground) {
                 const { strokeStyle, textFillStyle } = this.intentStyles.getRelatedPaintStyles(style);
 
                 const strokePaint = ((strokeStyle as PaintStyle)?.paints?.[0] as SolidPaint);
                 const colorPaint = ((textFillStyle as PaintStyle)?.paints?.[0] as SolidPaint);
 
+                const isSolidStrokeColor = strokePaint?.type === 'SOLID';
+                const isSolidPaintColor = colorPaint?.type === 'SOLID';
+
+                styleIds.fillStyleId = style.id;
+
+                if (isSolidStrokeColor) {
+                    styleIds.strokeStyleId = strokeStyle.id;
+                }
+
+                if (isSolidPaintColor) {
+                    styleIds.textFillStyleId = textFillStyle.id;
+                }
+
                 return {
                     name: style.name,
                     backgroundColor: stylePaint?.type === 'SOLID' ? `rgb(${figmaSolidPaintToRgb(stylePaint).join(', ')})` : 'transparent',
-                    fillStyleId: style.id,
-                    ...strokePaint?.type === 'SOLID' && {
-                        border: `1px solid rgb(${figmaSolidPaintToRgb(strokePaint).join(', ')})`,
-                        strokeStyleId: strokeStyle.id,
+                    styleIds,
+                    ...isSolidStrokeColor && {
+                        borderColor: `rgb(${figmaSolidPaintToRgb(strokePaint).join(', ')})`,
                     },
-                    ...colorPaint?.type === 'SOLID' && {
+                    ...isSolidPaintColor && {
                         color: `rgb(${figmaSolidPaintToRgb(colorPaint).join(', ')})`,
-                        textFillStyleId: textFillStyle.id,
                     }
                 }
             }
 
-            if (as === 'textFillPaint') {
-                return {
-                    name: style.name,
-                    ...stylePaint?.type === 'SOLID' && {
-                        color: `rgb(${figmaSolidPaintToRgb(stylePaint).join(', ')})`,
-                        fillStyleId: style.id,
-                    }
+            return {
+                name: style.name,
+                styleIds: {
+                    fillStyleId: style.id,
+                },
+                ...stylePaint?.type === 'SOLID' && {
+                    color: `rgb(${figmaSolidPaintToRgb(stylePaint).join(', ')})`,
                 }
             }
         }

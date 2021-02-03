@@ -47,7 +47,8 @@ export default class IntentRecommendationService {
     }
 
     getRecommendedStyles(node: SceneNode): {
-        fillStyles: Array<PaintStyle>,
+        fillStyles?: Array<PaintStyle>,
+        textFillStyles?: Array<PaintStyle>,
         textStyles?: Array<TextStyle>
     } | null {
         switch(node.type) {
@@ -79,19 +80,23 @@ export default class IntentRecommendationService {
     }
 
     getRecommendedTextStyles(node: TextNode): {
-        fillStyles: Array<PaintStyle>,
+        textFillStyles: Array<PaintStyle>,
         textStyles: Array<TextStyle>
     } {
-        if (this.isValidStyleId(node.textStyleId)) {
+        const hasValidTextStyle = this.isValidStyleId(node.textStyleId);
+        const hasValidFillStyle = this.isValidStyleId(node.fillStyleId);
+
+        if (hasValidTextStyle && hasValidFillStyle) {
             return null;
         }
 
-        const sortedTextStyles = getSortedTextStyles(node, this.textStyles);
-        const sortedPaintStyles = getSortedPaintStyles(node.fills?.[0]?.color, this.foregroundStyles);
-
         return {
-            textStyles: sortedTextStyles,
-            fillStyles: sortedPaintStyles
+            ...!hasValidTextStyle && {
+                textStyles: getSortedTextStyles(node, this.textStyles),
+            },
+            ...!hasValidFillStyle && {
+                textFillStyles: getSortedPaintStyles(node.fills?.[0]?.color, this.foregroundStyles)
+            },
         };
     }
 

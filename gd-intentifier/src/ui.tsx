@@ -1,31 +1,34 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import './ui.css'
-import useFigmaMessage from "./ui/hooks/use-figma-message";
+import BlankState from "./ui/components/blank-state";
+import useIntentRecommendations from "./ui/hooks/use-intent-recommendations";
+import IntentRecommendations from "./ui/components/intent-recommendations";
 
 declare function require(path: string): any
 
 function App() {
-    const [selection, setSelection] = React.useState(null);
+    const { hasSelection, hasRecommendations, items } = useIntentRecommendations();
 
-    const onSelectionChange = (message) => setSelection(message.selection);
-    const selectionMessage = useFigmaMessage('selectionChange', onSelectionChange);
+    if (!hasSelection) {
+        return (
+            <BlankState>
+                Select an element to receive intent recommendations.
+            </BlankState>
+        )
+    }
 
-    React.useEffect(() => {
-        if (selection) {
-            console.log(selection[0]?.textStyleId);
-        }
-    }, [selection]);
-
-    function getSelection() {
-        parent.postMessage({ pluginMessage: { type: 'get-selection' } }, '*')
+    if (!hasRecommendations) {
+        return (
+            <BlankState>
+                There are no intent recommendations for selected elements.
+            </BlankState>
+        )
     }
 
     return (
         <div>
-            <h2>Intentifier</h2>
-
-            <button onClick={getSelection}>Get selection</button>
+            <IntentRecommendations items={items} />
         </div>
     )
 }
