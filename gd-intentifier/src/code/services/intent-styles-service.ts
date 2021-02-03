@@ -3,13 +3,18 @@ import {camelCase} from 'lodash';
 import {getPaintGrouping} from "../utils/get-paint-grouping";
 
 interface IGroupedPaintStyles {
-    [groupName: string]: PaintStyle[]
+    [groupName: string]: {
+        fillStyle?: PaintStyle,
+        strokeStyle?: PaintStyle,
+        textFillStyle?: PaintStyle,
+    }
 }
 
 export class IntentStylesService {
     textStyles: TextStyle[];
     paintStyles: PaintStyle[];
     groupedPaintStyles: IGroupedPaintStyles;
+    groupedPaintStyleKeys: string[];
     validIntentCategories: Array<string>;
 
     constructor(config) {
@@ -20,6 +25,7 @@ export class IntentStylesService {
         this.textStyles = this.filterStyles<TextStyle>(textStyles);
         this.paintStyles = this.filterStyles<PaintStyle>(paintStyles);
         this.groupedPaintStyles = this.groupPaintStyles();
+        this.groupedPaintStyleKeys = Object.keys(this.groupedPaintStyles);
     }
 
     getValidIntentStyles(): { textStyles: TextStyle[], paintStyles: PaintStyle[], groupedPaintStyles: IGroupedPaintStyles } {
@@ -52,5 +58,13 @@ export class IntentStylesService {
 
             return acc;
         }, {});
+    }
+
+    getRelatedPaintStyles(paintStyle: PaintStyle) {
+        const [category, type] = getPaintGrouping(paintStyle.name);
+
+        const matchedKey = this.groupedPaintStyleKeys.find(key => key === category);
+
+        return this.groupedPaintStyles[matchedKey];
     }
 }

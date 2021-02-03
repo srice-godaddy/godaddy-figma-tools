@@ -1,7 +1,7 @@
-import {getDeltaE, getRGBDistance} from "./color";
+import { figmaRgbToRgb, getDeltaE, getRGBDistance } from "./color";
 
 export default function getSortedPaintStyles(needleColor: RGB, paintStyles: PaintStyle[]): PaintStyle[] {
-    const rgb1 = [(needleColor?.r || 0) * 255, (needleColor?.g || 0) * 255, (needleColor?.b || 0) * 255];
+    const rgb1 = figmaRgbToRgb(needleColor);
 
     const weighedDistance = [...paintStyles].map(paintStyle => {
         const paint = paintStyle.paints?.[0];
@@ -10,15 +10,14 @@ export default function getSortedPaintStyles(needleColor: RGB, paintStyles: Pain
             return {
                 paintStyle,
                 distance: Infinity,
+                deltaE: Infinity
             };
         }
 
-        const color = paint?.color;
-
-        const rgb2 = [color.r * 255, color.g * 255, color.b * 255];
+        const rgb2 = figmaRgbToRgb(paint.color);
 
         const distance = getRGBDistance(rgb1, rgb2);
-        const deltaE = getDeltaE(rgb1, rgb2)
+        const deltaE = getDeltaE(rgb1, rgb2);
 
         return {
             paintStyle,

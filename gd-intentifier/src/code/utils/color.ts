@@ -41,4 +41,16 @@ export function getRGBDistance(rgb1, rgb2) {
     const [r2, g2, b2] = rgb2;
 
     const distance = Math.sqrt(Math.abs(((r2-r1) * 0.3)^2 + ((g2-g1) * 0.59)^2 + ((b2-b1) * 0.11)^2));
+
+    return distance;
+}
+
+export function figmaRgbToRgb(color: RGB) {
+    const { r = 0, g = 0, b = 0 } = color || {};
+
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
+
+export function figmaSolidPaintToRgb(paint: SolidPaint) {
+    return figmaRgbToRgb(paint.color);
 }

@@ -1,16 +1,17 @@
 import {camelCase} from "lodash";
 
 const PAINT_TYPES = {
-    'backgroundColor': 'fillStyleId',
-    'borderColor': 'strokeStyleId',
-    'foregroundColor': 'textStyleId',
+    'backgroundColor': 'fillStyle',
+    'borderColor': 'strokeStyle',
+    'foregroundColor': 'textFillStyle',
+    'feedbackColor': 'fillStyle',
+    'onFeedbackColor': 'textFillStyle'
 }
 
 export function getParsedPaintName(paintStyleName: string) {
     const [category, type] = paintStyleName.split('/');
     return [camelCase(category), camelCase(type)];
 }
-
 
 export function getPaintGrouping(paintStyleName: string) {
     const [category, type] = paintStyleName.split('/');
