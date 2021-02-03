@@ -15,6 +15,18 @@ const TextDecorationTransform = {
     STRIKETHROUGH: 'line-through',
 }
 
+function getFontWeight(fontStyle) {
+    const weights = {
+        'Light': 300,
+        'Regular': 400,
+        'Medium': 500,
+        'Semibold': 600,
+        'Bold': 700,
+    };
+
+    return weights[fontStyle] ? weights[fontStyle] : 400;
+}
+
 export default class StyleTransformService {
     intentStyles: IntentStylesService;
 
@@ -88,7 +100,9 @@ export default class StyleTransformService {
 
             return {
                 name,
-                font: `${fontStyle} ${fontSize}px '${family}', sans-serif`,
+                fontFamily: `${family}, sans-serif`,
+                fontSize: `${fontSize}px`,
+                fontWeight: getFontWeight(fontStyle),
                 letterSpacing: letterSpacing.unit === 'PIXELS' ? `${letterSpacing.value}px` : `${letterSpacing.value}%`,
                 textTransform: TextCaseTransform[textCase],
                 textDecoration: TextDecorationTransform[textDecoration],

@@ -36,6 +36,8 @@ export default function IntentNodeRecommendations({nodeId, fillStyles, textFillS
     const hasTextFillStyles = textFillStyles?.length > 0;
     const hasTextStyles = textStyles?.length > 0;
 
+    const recommendedStyleGroupsCount = [hasFillStyles, hasTextFillStyles, hasTextStyles].filter(isValid => isValid).length;
+
     const handleStylePreviewClick = React.useCallback((styleIds) => {
         parent.postMessage({
             pluginMessage: {
@@ -44,44 +46,59 @@ export default function IntentNodeRecommendations({nodeId, fillStyles, textFillS
                 styleIds
             }
         }, '*')
-    }, [nodeId])
+    }, [nodeId]);
+
+    console.log({textStyles})
 
     return (
         <div className='ui-intent-recommendations__node'>
             {hasFillStyles && (
-                <div className='ui-intent-recommendations__fill-styles'>
-                    <h2>Fill style recommendations</h2>
+                <details {...recommendedStyleGroupsCount <= 1 && {
+                    open: true
+                }}>
+                    <summary>Fill style recommendations</summary>
 
-                    <div className='ui-intent-recommendations__items'>
-                        {fillStyles.map((fillStyle, idx) => (
-                            <StylePreview key={idx} {...fillStyle} onStylePreviewClick={handleStylePreviewClick}/>
-                        ))}
+                    <div className='ui-intent-recommendations__fill-styles'>
+                        <div className='ui-intent-recommendations__items'>
+                            {fillStyles.map((fillStyle, idx) => (
+                                <StylePreview key={idx} {...fillStyle} onStylePreviewClick={handleStylePreviewClick}/>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                </details>
             )}
 
             {hasTextFillStyles && (
-                <div className='ui-intent-recommendations__fill-styles'>
-                    <h2>Text fill style recommendations</h2>
+                <details  {...recommendedStyleGroupsCount <= 1 && {
+                    open: true
+                }}>
+                    <summary>Text fill style recommendations</summary>
 
-                    <div className='ui-intent-recommendations__items'>
-                        {textFillStyles.map((fillStyle, idx) => (
-                            <StylePreview key={idx} {...fillStyle} onStylePreviewClick={handleStylePreviewClick}/>
-                        ))}
+                    <div className='ui-intent-recommendations__fill-styles'>
+                        <div className='ui-intent-recommendations__items'>
+                            {textFillStyles.map((fillStyle, idx) => (
+                                <StylePreview key={idx} {...fillStyle} onStylePreviewClick={handleStylePreviewClick}/>
+                            ))}
+                        </div>
                     </div>
-                </div>
+
+                </details>
             )}
 
             {hasTextStyles && (
-                <div className='ui-intent-recommendations__fill-styles'>
-                    <h2>Text style recommendations</h2>
+                <details {...recommendedStyleGroupsCount <= 1 && {
+                    open: true
+                }}>
+                    <summary>Text style recommendations</summary>
 
-                    <div className='ui-intent-recommendations__items'>
-                        {textStyles.map((textStyle, idx) => (
-                            <StylePreview key={idx} {...textStyle} onStylePreviewClick={handleStylePreviewClick}/>
-                        ))}
+                    <div className='ui-intent-recommendations__fill-styles'>
+                        <div className='ui-intent-recommendations__items'>
+                            {textStyles.map((textStyle, idx) => (
+                                <StylePreview key={idx} {...textStyle} onStylePreviewClick={handleStylePreviewClick}/>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                </details>
             )}
         </div>
     )

@@ -12,23 +12,24 @@ interface StylePreviewProps {
 }
 
 export default function StylePreview(props: StylePreviewProps) {
-    const { color, backgroundColor, borderColor, font, onStylePreviewClick, styleIds, ...rest } = props;
+    const { name, borderColor, styleIds, onStylePreviewClick, ...cssProps } = props;
 
-    const [category, type] = rest.name.split('/');
+    const [category, type] = name.includes('/') ? name.split('/') : `${name}/Preview Text`.split('/');
 
     const memoizedStyle = React.useMemo(() => {
         return {
-            color,
-            backgroundColor,
-            font,
+            ...cssProps,
             ...borderColor && {
                 border: `2px solid ${borderColor}`
             }
         }
-    }, [color, backgroundColor, borderColor, font]);
+    }, [cssProps, borderColor]);
 
     return (
-        <div className='ui-style-preview' style={memoizedStyle} onClick={() => onStylePreviewClick(styleIds)}>
+        <div className='ui-style-preview'
+             style={memoizedStyle}
+             onClick={() => onStylePreviewClick(styleIds)}
+        >
             <div className='ui-style-preview__group'>{category}</div>
             <div className='ui-style-preview__type'>{type}</div>
         </div>
