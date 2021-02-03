@@ -44,16 +44,16 @@ function selectionToUIPresentation(selectionRecommendations) {
     return presentation;
 }
 
-figma.showUI(__html__, {width: 480, height: 640});
+figma.showUI(__html__, { width: 480, height: 100 });
 
 // TODO When to unbind event?
 figma.on('selectionchange', () => {
     const selectionRecommendations = intentRecommendation.getRecommendedSelectionStyles(figma.currentPage.selection);
     const presentation = selectionToUIPresentation(selectionRecommendations);
 
-    console.log({
-        selectionRecommendations, presentation
-    })
+    // We're allowing just a single element to get into selection for now.
+    // TODO Figure out how to support multiple element selection.
+    figma.ui.resize(480,presentation.hasRecommendations && Object.keys(presentation.byNodeId).length === 1 ? 640 : 100)
 
     figma.ui.postMessage({
         type: 'intentRecommendationUpdate',
@@ -76,9 +76,6 @@ figma.ui.onmessage = (msg: CustomMsgType) => {
         const { nodeId, styleIds = {} } = msg;
 
         const node = figma.getNodeById(nodeId);
-        console.log({
-            node, styleIds
-        })
         if (node) {
             Object.entries(styleIds).forEach(([key, styleId]) => {
                 const isCustomTextFill = key === 'textFillStyleId';

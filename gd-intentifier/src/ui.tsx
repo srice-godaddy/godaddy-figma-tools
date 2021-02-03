@@ -10,6 +10,14 @@ declare function require(path: string): any
 function App() {
     const { hasSelection, hasRecommendations, items } = useIntentRecommendations();
 
+    if (items.length > 1) {
+        return (
+            <BlankState>
+                Only a single element selection is allowed at this point.
+            </BlankState>
+        )
+    }
+
     if (!hasSelection) {
         return (
             <BlankState>
@@ -21,7 +29,7 @@ function App() {
     if (!hasRecommendations) {
         return (
             <BlankState>
-                There are no intent recommendations for selected elements.
+                ✅ There are no intent recommendations for selected element.
             </BlankState>
         )
     }
