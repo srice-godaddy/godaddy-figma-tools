@@ -77,13 +77,25 @@ figma.ui.onmessage = (msg: CustomMsgType) => {
 
         const node = figma.getNodeById(nodeId);
         if (node) {
-            Object.entries(styleIds).forEach(([key, styleId]) => {
+            const styleIdEntries = Object.entries(styleIds);
+            const resetPaintStyles = styleIdEntries.length > 0 &&
+                styleIdEntries.every(([key, styleId]) => key !== 'textStyleId');
+
+            if (resetPaintStyles) {
+                (node as any).fillStyleId = '';
+                (node as any).fills = [];
+
+                (node as any).strokeStyleId = '';
+                (node as any).strokes = [];
+            }
+
+            styleIdEntries.forEach(([key, styleId]) => {
                 const isCustomTextFill = key === 'textFillStyleId';
                 if (!isCustomTextFill) {
                     node[key] = styleId;
                 }
 
-                if (node.type === 'TEXT') {
+                if (isCustomTextFill && node.type === 'TEXT') {
                     node.fillStyleId = styleId;
                 }
 

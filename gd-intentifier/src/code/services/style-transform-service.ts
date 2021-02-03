@@ -109,12 +109,10 @@ export default class StyleTransformService {
                 ...lineHeight?.value && {
                     lineHeight: lineHeight.unit === 'PIXELS' ? `${lineHeight.value}px` : lineHeight.value
                 },
-                textStyleId: style.id,
+                styleIds: {
+                    textStyleId: style.id,
+                }
             }
         }
-
-        return {
-            name
-        };
     }
 }
