@@ -48,8 +48,8 @@ export default function IntentNodeFixes({ items }) {
                     key={item.nodeId}
                     {...item.fillStyle}
                     onStylePreviewClick={(styleIds) => handleStylePreviewClick(item.nodeId, styleIds)}
-                    onStylePreviewMouseOver={styleIds => handleStylePreviewMouseEnter(item.nodeId, styleIds)}
-                    onStylePreviewMouseOut={() => handleStylePreviewMouseLeave(item.nodeId)}
+                    onStylePreviewMouseEnter={styleIds => handleStylePreviewMouseEnter(item.nodeId, styleIds)}
+                    onStylePreviewMouseLeave={() => handleStylePreviewMouseLeave(item.nodeId)}
                 />
             ))}
         </div>

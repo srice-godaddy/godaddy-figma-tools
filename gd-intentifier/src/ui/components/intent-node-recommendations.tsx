@@ -60,7 +60,7 @@ export default function IntentNodeRecommendations({
         }, '*')
     }, [nodeId]);
 
-    const handleStylePreviewMouseOver = React.useCallback(styleIds => {
+    const handleStylePreviewMouseEnter = React.useCallback(styleIds => {
         parent.postMessage({
             pluginMessage: {
                 type: 'previewNodeStyle',
@@ -70,7 +70,7 @@ export default function IntentNodeRecommendations({
         }, '*');
     }, [nodeId]);
 
-    const handleStylePreviewMouseOut = React.useCallback(styleIds => {
+    const handleStylePreviewMouseLeave = React.useCallback(styleIds => {
         parent.postMessage({
             pluginMessage: {
                 type: 'revertNodeStyle',
@@ -97,14 +97,14 @@ export default function IntentNodeRecommendations({
                                         setAccordionsOpened((currentState) => {
                                             return {
                                                 ...currentState,
-                                                // fillStyles: false,
+                                                fillStyles: false,
                                             }
                                         });
 
                                         handleStylePreviewClick(styleIds);
                                     }}
-                                    onStylePreviewMouseOver={handleStylePreviewMouseOver}
-                                    onStylePreviewMouseOut={handleStylePreviewMouseOut}
+                                    onStylePreviewMouseEnter={handleStylePreviewMouseEnter}
+                                    onStylePreviewMouseLeave={handleStylePreviewMouseLeave}
                                 />
                             ))}
                         </div>
@@ -128,14 +128,14 @@ export default function IntentNodeRecommendations({
                                         setAccordionsOpened((currentState) => {
                                             return {
                                                 ...currentState,
-                                                // textFillStyles: false,
+                                                textFillStyles: false,
                                             }
                                         });
 
                                         handleStylePreviewClick(styleIds);
                                     }}
-                                    onStylePreviewMouseOver={handleStylePreviewMouseOver}
-                                    onStylePreviewMouseOut={handleStylePreviewMouseOut}
+                                    onStylePreviewMouseEnter={handleStylePreviewMouseEnter}
+                                    onStylePreviewMouseLeave={handleStylePreviewMouseLeave}
                                 />
                             ))}
                         </div>
@@ -160,14 +160,14 @@ export default function IntentNodeRecommendations({
                                         setAccordionsOpened((currentState) => {
                                             return {
                                                 ...currentState,
-                                                // textStyles: false,
+                                                textStyles: false,
                                             }
                                         });
 
                                         handleStylePreviewClick(styleIds);
                                     }}
-                                    onStylePreviewMouseOver={handleStylePreviewMouseOver}
-                                    onStylePreviewMouseOut={handleStylePreviewMouseOut}
+                                    onStylePreviewMouseEnter={handleStylePreviewMouseEnter}
+                                    onStylePreviewMouseLeave={handleStylePreviewMouseLeave}
                                 />
                             ))}
                         </div>
