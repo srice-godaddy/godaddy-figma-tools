@@ -29,13 +29,6 @@ figma.on('selectionchange', () => {
     const shouldHaveExpandedHeight = recommendationsUI.hasRecommendations && Object.keys(recommendationsUI.byNodeId).length === 1;
     figma.ui.resize(PLUGIN_DIMENSIONS.WIDTH, shouldHaveExpandedHeight? PLUGIN_DIMENSIONS.HEIGHT : PLUGIN_DIMENSIONS.HEIGHT_COLLAPSED);
 
-    console.log({
-        recommendations,
-        recommendationsUI,
-        fixes,
-        fixesUI,
-    })
-
     figma.ui.postMessage({
         type: 'intentRecommendationUpdate',
         payload: {

@@ -9,11 +9,7 @@ import IntentNodeFixes from "./ui/components/intent-node-fixes";
 declare function require(path: string): any
 
 function App() {
-    const response = useIntentRecommendations();
-    const { hasSelection, hasRecommendations, recommendations, fixes, hasFixes } = response;
-
-    console.log(response);
-    // const { hasSelection, hasRecommendations, recommendations, fixes, hasFixes } = useIntentRecommendations();
+    const { hasSelection, hasRecommendations, recommendations, fixes, hasFixes } = useIntentRecommendations();
 
     if (recommendations.length > 1) {
         return (

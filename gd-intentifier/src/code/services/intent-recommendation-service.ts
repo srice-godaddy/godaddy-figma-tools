@@ -124,7 +124,7 @@ export default class IntentRecommendationService {
     getNodeStyleFixes(node: SceneNode) {
         switch(node.type) {
             case "TEXT":
-                return {};
+                return null;
             case "ELLIPSE":
             case "POLYGON":
             case "RECTANGLE":

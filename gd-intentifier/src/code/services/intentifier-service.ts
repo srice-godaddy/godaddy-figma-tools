@@ -38,8 +38,6 @@ export default class IntentifierService {
             byNodeId: {},
         });
 
-        console.log(prepared);
-
         return prepared;
     }
 
