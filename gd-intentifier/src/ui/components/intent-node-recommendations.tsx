@@ -75,7 +75,7 @@ export default function IntentNodeRecommendations({
                                     setAccordionsOpened((currentState) => {
                                         return {
                                             ...currentState,
-                                            fillStyles: false,
+                                            // fillStyles: false,
                                         }
                                     });
 
@@ -101,7 +101,7 @@ export default function IntentNodeRecommendations({
                                     setAccordionsOpened((currentState) => {
                                         return {
                                             ...currentState,
-                                            textFillStyles: false,
+                                            // textFillStyles: false,
                                         }
                                     });
 
@@ -127,7 +127,7 @@ export default function IntentNodeRecommendations({
                                     setAccordionsOpened((currentState) => {
                                         return {
                                             ...currentState,
-                                            textStyles: false,
+                                            // textStyles: false,
                                         }
                                     });
 
