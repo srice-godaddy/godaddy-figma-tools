@@ -16,6 +16,25 @@ export default function IntentNodeFixes({ items }) {
         }, '*')
     }, []);
 
+    const handleStylePreviewMouseEnter = React.useCallback((nodeId, styleIds) => {
+        parent.postMessage({
+            pluginMessage: {
+                type: 'previewNodeStyle',
+                nodeId,
+                styleIds,
+            }
+        }, '*')
+    }, [])
+
+    const handleStylePreviewMouseLeave = React.useCallback((nodeId) => {
+        parent.postMessage({
+            pluginMessage: {
+                type: 'revertNodeStyle',
+                nodeId,
+            }
+        }, '*')
+    }, [])
+
     if (!items.length) {
         return null;
     }
@@ -25,7 +44,13 @@ export default function IntentNodeFixes({ items }) {
             <h2 className='ui-intent-fixes__heading'>Existing styles don't use complete intent set. Click on preview to fix.</h2>
 
             {items.map(item => (
-                <StylePreview key={item.nodeId} {...item.fillStyle} onStylePreviewClick={(styleIds) => handleStylePreviewClick(item.nodeId, styleIds)}  />
+                <StylePreview
+                    key={item.nodeId}
+                    {...item.fillStyle}
+                    onStylePreviewClick={(styleIds) => handleStylePreviewClick(item.nodeId, styleIds)}
+                    onStylePreviewMouseOver={styleIds => handleStylePreviewMouseEnter(item.nodeId, styleIds)}
+                    onStylePreviewMouseOut={() => handleStylePreviewMouseLeave(item.nodeId)}
+                />
             ))}
         </div>
     )
