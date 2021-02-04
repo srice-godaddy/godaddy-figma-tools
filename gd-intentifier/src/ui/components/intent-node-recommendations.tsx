@@ -48,8 +48,6 @@ export default function IntentNodeRecommendations({nodeId, fillStyles, textFillS
         }, '*')
     }, [nodeId]);
 
-    console.log({textStyles})
-
     return (
         <div className='ui-intent-recommendations__node'>
             {hasFillStyles && (

@@ -36,39 +36,12 @@ export default class StyleTransformService {
 
     toPresentation(style: PaintStyle | TextStyle, isForeground = false) {
         if (style.type === 'PAINT') {
-            const styleIds: StyleIdsType = {};
             const stylePaint = ((style as PaintStyle)?.paints?.[0] as SolidPaint);
 
             if (!isForeground) {
-                const { strokeStyle, textFillStyle } = this.intentStyles.getRelatedPaintStyles(style);
+                const relatedPaintStyles = this.intentStyles.getRelatedPaintStyles(style);
 
-                const strokePaint = ((strokeStyle as PaintStyle)?.paints?.[0] as SolidPaint);
-                const colorPaint = ((textFillStyle as PaintStyle)?.paints?.[0] as SolidPaint);
-
-                const isSolidStrokeColor = strokePaint?.type === 'SOLID';
-                const isSolidPaintColor = colorPaint?.type === 'SOLID';
-
-                styleIds.fillStyleId = style.id;
-
-                if (isSolidStrokeColor) {
-                    styleIds.strokeStyleId = strokeStyle.id;
-                }
-
-                if (isSolidPaintColor) {
-                    styleIds.textFillStyleId = textFillStyle.id;
-                }
-
-                return {
-                    name: style.name,
-                    backgroundColor: stylePaint?.type === 'SOLID' ? `rgb(${figmaSolidPaintToRgb(stylePaint).join(', ')})` : 'transparent',
-                    styleIds,
-                    ...isSolidStrokeColor && {
-                        borderColor: `rgb(${figmaSolidPaintToRgb(strokePaint).join(', ')})`,
-                    },
-                    ...isSolidPaintColor && {
-                        color: `rgb(${figmaSolidPaintToRgb(colorPaint).join(', ')})`,
-                    }
-                }
+                return this.transformRelatedPaintStyles(relatedPaintStyles);
             }
 
             return {
@@ -112,6 +85,42 @@ export default class StyleTransformService {
                 styleIds: {
                     textStyleId: style.id,
                 }
+            }
+        }
+    }
+
+    transformRelatedPaintStyles(relatedPaintStyles) {
+        const styleIds: StyleIdsType = {};
+
+        const { strokeStyle, textFillStyle, fillStyle } = relatedPaintStyles;
+
+        const fillPaint = ((fillStyle as PaintStyle)?.paints?.[0] as SolidPaint);
+        const strokePaint = ((strokeStyle as PaintStyle)?.paints?.[0] as SolidPaint);
+        const colorPaint = ((textFillStyle as PaintStyle)?.paints?.[0] as SolidPaint);
+
+        const isSolidFillColor = fillPaint?.type === 'SOLID';
+        const isSolidStrokeColor = strokePaint?.type === 'SOLID';
+        const isSolidPaintColor = colorPaint?.type === 'SOLID';
+
+        styleIds.fillStyleId = fillStyle.id;
+
+        if (isSolidStrokeColor) {
+            styleIds.strokeStyleId = strokeStyle.id;
+        }
+
+        if (isSolidPaintColor) {
+            styleIds.textFillStyleId = textFillStyle.id;
+        }
+
+        return {
+            name: fillStyle.name,
+            backgroundColor: isSolidFillColor ? `rgb(${figmaSolidPaintToRgb(fillPaint).join(', ')})` : 'transparent',
+            styleIds,
+            ...isSolidStrokeColor && {
+                borderColor: `rgb(${figmaSolidPaintToRgb(strokePaint).join(', ')})`,
+            },
+            ...isSolidPaintColor && {
+                color: `rgb(${figmaSolidPaintToRgb(colorPaint).join(', ')})`,
             }
         }
     }

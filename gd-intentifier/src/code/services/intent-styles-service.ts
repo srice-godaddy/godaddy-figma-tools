@@ -59,11 +59,27 @@ export class IntentStylesService {
         }, {});
     }
 
-    getRelatedPaintStyles(paintStyle: PaintStyle) {
+    getRelatedPaintStyles(paintStyle: PaintStyle, excludeCurrent: boolean = false): {
+        fillStyle?: PaintStyle;
+        strokeStyle?: PaintStyle;
+        textFillStyle?: PaintStyle;
+    } {
         const [category] = getPaintGrouping(paintStyle.name);
 
         const matchedKey = this.groupedPaintStyleKeys.find(key => key === category);
 
-        return this.groupedPaintStyles[matchedKey];
+        const relatedPaintStyle = this.groupedPaintStyles[matchedKey];
+
+        if (!excludeCurrent) {
+            return relatedPaintStyle;
+        }
+
+        return Object.entries(relatedPaintStyle).reduce((paintStyles, [paintKey, currentPaintStyle]) => {
+            if (paintStyle.id !== currentPaintStyle.id) {
+                paintStyles[paintKey] = currentPaintStyle;
+            }
+
+            return paintStyles;
+        }, {});
     }
 }

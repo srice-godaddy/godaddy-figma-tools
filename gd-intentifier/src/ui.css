@@ -1,14 +1,18 @@
 body {
   font: 14px sans-serif;
-  margin: 20px;
+  margin: 15px;
 }
 
 .ui-blank-state {
+    display: flex;
+    align-items: center;
+    height: 100%;
     text-align: center;
     font-size: 1.2rem;
 }
 
-.ui-intent-recommendations__items {
+.ui-intent-recommendations__items,
+.ui-intent-fixes {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
@@ -46,4 +50,17 @@ details summary {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 15px;
+}
+
+.ui-intent-fixes {
+    align-items: center;
+}
+
+.ui-intent-fixes:not(:only-child) {
+    margin-bottom: 15px;
+}
+
+.ui-intent-fixes__heading {
+    font-size: 16px;
+    margin: 0;
 }

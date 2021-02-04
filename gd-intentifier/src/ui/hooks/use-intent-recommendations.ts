@@ -2,11 +2,14 @@ import * as React from "react";
 import { isEmpty } from 'lodash';
 import useFigmaMessage from "./use-figma-message";
 import {IntentNodeRecommendationType} from "../components/intent-node-recommendations";
+import {IntentNodeFixesType} from "../components/intent-node-fixes";
 
 export default function useIntentRecommendations(): {
     hasSelection: boolean,
     hasRecommendations: boolean,
-    items: IntentNodeRecommendationType[];
+    hasFixes: boolean;
+    recommendations: IntentNodeRecommendationType[];
+    fixes: IntentNodeFixesType[];
 } {
     const [intentRecommendations, setIntentRecommendations] = React.useState(null);
 
@@ -14,13 +17,15 @@ export default function useIntentRecommendations(): {
     useFigmaMessage('intentRecommendationUpdate', onSelectionChange);
 
     return React.useMemo(() => {
-        const hasSelection = intentRecommendations?.byNodeId && !isEmpty(intentRecommendations.byNodeId);
+        const hasSelection = intentRecommendations?.recommendations?.byNodeId && !isEmpty(intentRecommendations.recommendations.byNodeId);
 
         return {
             hasSelection,
-            hasRecommendations: intentRecommendations?.hasRecommendations,
-            items: Object.values(intentRecommendations?.byNodeId || {})
+            hasRecommendations: intentRecommendations?.recommendations?.hasRecommendations,
+            hasFixes: intentRecommendations?.fixes?.hasFixes,
+            recommendations: Object.values(intentRecommendations?.recommendations?.byNodeId || {})
                 .filter(item => (item as IntentNodeRecommendationType).hasRecommendations) as IntentNodeRecommendationType[],
+            fixes: Object.values(intentRecommendations?.fixes?.byNodeId || {}),
         }
     }, [intentRecommendations]);
 }

@@ -2,23 +2,46 @@
 
 import IntentifierService from "./code/services/intentifier-service";
 
+const PLUGIN_DIMENSIONS = {
+    WIDTH: 480,
+    HEIGHT: 640,
+    HEIGHT_COLLAPSED: 100,
+}
+
 const intentifier = new IntentifierService(figma);
 
-figma.showUI(__html__, { width: 480, height: 100 });
+figma.showUI(__html__, {
+    width: PLUGIN_DIMENSIONS.WIDTH,
+    height: PLUGIN_DIMENSIONS.HEIGHT_COLLAPSED
+});
 
 // TODO When to unbind event?
 figma.on('selectionchange', () => {
-    const selectionRecommendations = intentifier.intentRecommendation.getRecommendedSelectionStyles(figma.currentPage.selection);
-    const presentation = intentifier.transformRecommendationToUI(selectionRecommendations);
+    const selection = figma.currentPage.selection;
+    const recommendations = intentifier.intentRecommendation.getRecommendedSelectionStyles(selection);
+    const fixes = intentifier.intentRecommendation.getIntentStyleFixes(selection);
+
+    const recommendationsUI = intentifier.transformRecommendationToUI(recommendations);
+    const fixesUI = intentifier.transformFixesToUI(fixes);
 
     // We're allowing just a single element to get into selection for now.
     // TODO Figure out how to support multiple element selection.
-    const shouldHaveExpandedHeight = presentation.hasRecommendations && Object.keys(presentation.byNodeId).length === 1;
-    figma.ui.resize(480, shouldHaveExpandedHeight? 640 : 100)
+    const shouldHaveExpandedHeight = recommendationsUI.hasRecommendations && Object.keys(recommendationsUI.byNodeId).length === 1;
+    figma.ui.resize(PLUGIN_DIMENSIONS.WIDTH, shouldHaveExpandedHeight? PLUGIN_DIMENSIONS.HEIGHT : PLUGIN_DIMENSIONS.HEIGHT_COLLAPSED);
+
+    console.log({
+        recommendations,
+        recommendationsUI,
+        fixes,
+        fixesUI,
+    })
 
     figma.ui.postMessage({
         type: 'intentRecommendationUpdate',
-        payload: presentation,
+        payload: {
+            recommendations: recommendationsUI,
+            fixes: fixesUI,
+        },
     });
 })
 

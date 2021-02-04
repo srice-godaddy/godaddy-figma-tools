@@ -1,18 +1,25 @@
 import getSortedPaintStyles from "../utils/get-sorted-paint-styles";
 import getSortedTextStyles from "../utils/get-sorted-text-styles";
 import { getParsedPaintName } from "../utils/get-paint-grouping";
+import {IntentStylesService} from "./intent-styles-service";
+import { isEmpty } from 'lodash';
 
 type SupportedPaintStylesType = InstanceNode | EllipseNode | PolygonNode | RectangleNode | StarNode | VectorNode;
 
 export default class IntentRecommendationService {
+    figmaInstance: PluginAPI;
+    intentStyles: IntentStylesService;
     textStyles: TextStyle[];
     paintStyles: PaintStyle[];
     backgroundStyles: PaintStyle[];
     foregroundStyles: PaintStyle[];
     styleIds: string[];
 
-    constructor(config) {
-        const { textStyles, paintStyles } = config;
+    constructor(figmaInstance: PluginAPI, intentStyles: IntentStylesService) {
+        this.figmaInstance = figmaInstance;
+        this.intentStyles = intentStyles;
+
+        const { textStyles, paintStyles } = this.intentStyles.getValidIntentStyles();
 
         this.textStyles = textStyles;
         this.paintStyles = paintStyles;
@@ -104,5 +111,65 @@ export default class IntentRecommendationService {
         }
 
         return this.styleIds.includes(styleId);
+    }
+
+    getIntentStyleFixes(selection: ReadonlyArray<SceneNode>) {
+        return selection.reduce((accu, node: SceneNode) => {
+            accu[node.id] = this.getNodeStyleFixes(node);
+
+            return accu;
+        }, {});
+    }
+
+    getNodeStyleFixes(node: SceneNode) {
+        switch(node.type) {
+            case "TEXT":
+                return {};
+            case "ELLIPSE":
+            case "POLYGON":
+            case "RECTANGLE":
+            case "STAR":
+            case "VECTOR":
+            case "INSTANCE":
+                const mainPaintStyleResponse = this.getMainPaintStyle(node);
+                if (!mainPaintStyleResponse) {
+                    return null;
+                }
+
+                const [mainPaintStyleKey, mainPaintStyle] = mainPaintStyleResponse;
+                const relatedPaintStyles = this.intentStyles.getRelatedPaintStyles(mainPaintStyle);
+
+                const shouldHaveFillStyle = !!relatedPaintStyles?.fillStyle?.id;
+                const shouldHaveStrokeStyle = !!relatedPaintStyles?.strokeStyle?.id;
+
+                const hasFillStyle = !isEmpty(node.fills);
+                const hasStrokeStyle = !isEmpty(node.strokes);
+                if (
+                    shouldHaveFillStyle !== hasFillStyle ||
+                    shouldHaveStrokeStyle !== hasStrokeStyle ||
+                    (node.fillStyleId || null) !== (relatedPaintStyles?.fillStyle?.id || null) ||
+                    (node.strokeStyleId || null) !== (relatedPaintStyles?.strokeStyle?.id || null)
+                ) {
+                    return relatedPaintStyles;
+                }
+
+                return null;
+            default:
+                return null;
+        }
+    }
+
+    getMainPaintStyle(node): [string, PaintStyle] {
+        const prioritizedPaintStyles = ['fillStyleId', 'strokeStyleId'];
+        const mainPaintStyleKey = prioritizedPaintStyles
+            .find(paintStyleIdKey => this.isValidStyleId(node[paintStyleIdKey]));
+
+        if (!mainPaintStyleKey) {
+            return null;
+        }
+
+        const paintStyle: PaintStyle = this.figmaInstance.getStyleById(node[mainPaintStyleKey]) as PaintStyle;
+
+        return [mainPaintStyleKey, paintStyle];
     }
 }

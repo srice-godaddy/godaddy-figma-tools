@@ -15,8 +15,32 @@ export default class IntentifierService {
         const paintStyles = this.figmaInstance.getLocalPaintStyles();
 
         this.intentStyles = new IntentStylesService({ textStyles, paintStyles });
-        this.intentRecommendation = new IntentRecommendationService(this.intentStyles.getValidIntentStyles());
+        this.intentRecommendation = new IntentRecommendationService(this.figmaInstance, this.intentStyles);
         this.styleTransform = new StyleTransformService(this.intentStyles);
+    }
+
+    transformFixesToUI(nodesMap) {
+        const prepared = Object.entries(nodesMap).reduce((selectionMap, [nodeId, relatedPaintStyles]) => {
+            if (!relatedPaintStyles) {
+                return selectionMap;
+            }
+
+            selectionMap.hasFixes = true;
+
+            selectionMap.byNodeId[nodeId] = {
+                nodeId,
+                fillStyle: this.styleTransform.transformRelatedPaintStyles(relatedPaintStyles)
+            };
+
+            return selectionMap;
+        }, {
+            hasFixes: false,
+            byNodeId: {},
+        });
+
+        console.log(prepared);
+
+        return prepared;
     }
 
     transformRecommendationToUI(nodesMap) {

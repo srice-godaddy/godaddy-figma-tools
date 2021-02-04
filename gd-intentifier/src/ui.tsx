@@ -4,13 +4,18 @@ import './ui.css'
 import BlankState from "./ui/components/blank-state";
 import useIntentRecommendations from "./ui/hooks/use-intent-recommendations";
 import IntentRecommendations from "./ui/components/intent-recommendations";
+import IntentNodeFixes from "./ui/components/intent-node-fixes";
 
 declare function require(path: string): any
 
 function App() {
-    const { hasSelection, hasRecommendations, items } = useIntentRecommendations();
+    const response = useIntentRecommendations();
+    const { hasSelection, hasRecommendations, recommendations, fixes, hasFixes } = response;
 
-    if (items.length > 1) {
+    console.log(response);
+    // const { hasSelection, hasRecommendations, recommendations, fixes, hasFixes } = useIntentRecommendations();
+
+    if (recommendations.length > 1) {
         return (
             <BlankState>
                 Only a single element selection is allowed at this point.
@@ -18,7 +23,7 @@ function App() {
         )
     }
 
-    if (!hasSelection) {
+    if (!hasFixes && !hasSelection) {
         return (
             <BlankState>
                 Select an element to receive intent recommendations.
@@ -26,7 +31,7 @@ function App() {
         )
     }
 
-    if (!hasRecommendations) {
+    if (!hasFixes && !hasRecommendations) {
         return (
             <BlankState>
                 ✅ There are no intent recommendations for selected element.
@@ -36,7 +41,11 @@ function App() {
 
     return (
         <div>
-            <IntentRecommendations items={items} />
+            <IntentNodeFixes items={fixes} />
+
+            {hasRecommendations && (
+                <IntentRecommendations items={recommendations} />
+            )}
         </div>
     )
 }
