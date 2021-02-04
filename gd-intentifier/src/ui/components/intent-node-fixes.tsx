@@ -10,7 +10,8 @@ export default function IntentNodeFixes({ items }) {
             pluginMessage: {
                 type: 'updateNodeStyle',
                 nodeId,
-                styleIds
+                styleIds,
+                refreshUI: true,
             }
         }, '*')
     }, []);

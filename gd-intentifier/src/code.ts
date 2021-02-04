@@ -10,13 +10,7 @@ const PLUGIN_DIMENSIONS = {
 
 const intentifier = new IntentifierService(figma);
 
-figma.showUI(__html__, {
-    width: PLUGIN_DIMENSIONS.WIDTH,
-    height: PLUGIN_DIMENSIONS.HEIGHT_COLLAPSED
-});
-
-// TODO When to unbind event?
-figma.on('selectionchange', () => {
+function handleSelectionChange() {
     const selection = figma.currentPage.selection;
     const recommendations = intentifier.intentRecommendation.getRecommendedSelectionStyles(selection);
     const fixes = intentifier.intentRecommendation.getIntentStyleFixes(selection);
@@ -36,18 +30,31 @@ figma.on('selectionchange', () => {
             fixes: fixesUI,
         },
     });
-})
+}
+
+figma.showUI(__html__, {
+    width: PLUGIN_DIMENSIONS.WIDTH,
+    height: PLUGIN_DIMENSIONS.HEIGHT_COLLAPSED
+});
+
+// TODO When to unbind event?
+figma.on('selectionchange', handleSelectionChange)
 
 type CustomMsgType = {
-    type: 'updateNodeStyle',
-    nodeId: 'string',
-    styleIds: StyleIdsType
+    type: 'updateNodeStyle';
+    nodeId: 'string';
+    styleIds: StyleIdsType;
+    refreshUI: boolean;
 }
 
 figma.ui.onmessage = (msg: CustomMsgType) => {
     if (msg.type === 'updateNodeStyle') {
-        const { nodeId, styleIds = {} } = msg;
+        const { nodeId, styleIds = {}, refreshUI = false } = msg;
 
         intentifier.applyStylesToNode(nodeId, styleIds);
+
+        if (refreshUI) {
+            handleSelectionChange();
+        }
     }
 }
