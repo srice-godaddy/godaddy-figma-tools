@@ -1,5 +1,6 @@
 import * as React from "react";
 import StylePreview from "./style-preview";
+import {useState} from "react";
 
 export type StyleIdsType = {
     fillStyleId?: string;
@@ -31,12 +32,23 @@ export type IntentNodeRecommendationType = {
     textStyles?: IntentTextStyleType[];
 }
 
-export default function IntentNodeRecommendations({nodeId, fillStyles, textFillStyles, textStyles}: IntentNodeRecommendationType) {
+export default function IntentNodeRecommendations({
+                                                      nodeId,
+                                                      fillStyles,
+                                                      textFillStyles,
+                                                      textStyles
+                                                  }: IntentNodeRecommendationType) {
     const hasFillStyles = fillStyles?.length > 0;
     const hasTextFillStyles = textFillStyles?.length > 0;
     const hasTextStyles = textStyles?.length > 0;
 
     const recommendedStyleGroupsCount = [hasFillStyles, hasTextFillStyles, hasTextStyles].filter(isValid => isValid).length;
+
+    const [accordionsOpened, setAccordionsOpened] = useState({
+        fillStyles: hasFillStyles && recommendedStyleGroupsCount === 1,
+        textFillStyles: hasTextFillStyles && recommendedStyleGroupsCount === 1,
+        textStyles: hasTextStyles && recommendedStyleGroupsCount === 1,
+    })
 
     const handleStylePreviewClick = React.useCallback((styleIds) => {
         parent.postMessage({
@@ -51,7 +63,7 @@ export default function IntentNodeRecommendations({nodeId, fillStyles, textFillS
     return (
         <div className='ui-intent-recommendations__node'>
             {hasFillStyles && (
-                <details {...recommendedStyleGroupsCount <= 1 && {
+                <details {...accordionsOpened.fillStyles && {
                     open: true
                 }}>
                     <summary>Fill style recommendations</summary>
@@ -59,7 +71,17 @@ export default function IntentNodeRecommendations({nodeId, fillStyles, textFillS
                     <div className='ui-intent-recommendations__fill-styles'>
                         <div className='ui-intent-recommendations__items'>
                             {fillStyles.map((fillStyle, idx) => (
-                                <StylePreview key={idx} {...fillStyle} onStylePreviewClick={handleStylePreviewClick}/>
+                                <StylePreview key={idx} {...fillStyle} onStylePreviewClick={styleIds => {
+                                    setAccordionsOpened((currentState) => {
+                                        return {
+                                            ...currentState,
+                                            fillStyles: false,
+                                        }
+                                    });
+
+                                    handleStylePreviewClick(styleIds);
+                                }}
+                                />
                             ))}
                         </div>
                     </div>
@@ -67,7 +89,7 @@ export default function IntentNodeRecommendations({nodeId, fillStyles, textFillS
             )}
 
             {hasTextFillStyles && (
-                <details  {...recommendedStyleGroupsCount <= 1 && {
+                <details  {...accordionsOpened.textFillStyles && {
                     open: true
                 }}>
                     <summary>Text fill style recommendations</summary>
@@ -75,7 +97,16 @@ export default function IntentNodeRecommendations({nodeId, fillStyles, textFillS
                     <div className='ui-intent-recommendations__fill-styles'>
                         <div className='ui-intent-recommendations__items'>
                             {textFillStyles.map((fillStyle, idx) => (
-                                <StylePreview key={idx} {...fillStyle} onStylePreviewClick={handleStylePreviewClick}/>
+                                <StylePreview key={idx} {...fillStyle} onStylePreviewClick={styleIds => {
+                                    setAccordionsOpened((currentState) => {
+                                        return {
+                                            ...currentState,
+                                            textFillStyles: false,
+                                        }
+                                    });
+
+                                    handleStylePreviewClick(styleIds);
+                                }}/>
                             ))}
                         </div>
                     </div>
@@ -84,7 +115,7 @@ export default function IntentNodeRecommendations({nodeId, fillStyles, textFillS
             )}
 
             {hasTextStyles && (
-                <details {...recommendedStyleGroupsCount <= 1 && {
+                <details {...accordionsOpened.textStyles && {
                     open: true
                 }}>
                     <summary>Text style recommendations</summary>
@@ -92,7 +123,17 @@ export default function IntentNodeRecommendations({nodeId, fillStyles, textFillS
                     <div className='ui-intent-recommendations__fill-styles'>
                         <div className='ui-intent-recommendations__items'>
                             {textStyles.map((textStyle, idx) => (
-                                <StylePreview key={idx} {...textStyle} onStylePreviewClick={handleStylePreviewClick}/>
+                                <StylePreview key={idx} {...textStyle} onStylePreviewClick={styleIds => {
+                                    setAccordionsOpened((currentState) => {
+                                        return {
+                                            ...currentState,
+                                            textStyles: false,
+                                        }
+                                    });
+
+                                    handleStylePreviewClick(styleIds);
+                                }}
+                                />
                             ))}
                         </div>
                     </div>
