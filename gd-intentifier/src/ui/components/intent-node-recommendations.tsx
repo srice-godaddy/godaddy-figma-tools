@@ -60,6 +60,25 @@ export default function IntentNodeRecommendations({
         }, '*')
     }, [nodeId]);
 
+    const handleStylePreviewMouseOver = React.useCallback(styleIds => {
+        parent.postMessage({
+            pluginMessage: {
+                type: 'previewNodeStyle',
+                styleIds,
+                nodeId,
+            }
+        }, '*');
+    }, [nodeId]);
+
+    const handleStylePreviewMouseOut = React.useCallback(styleIds => {
+        parent.postMessage({
+            pluginMessage: {
+                type: 'revertNodeStyle',
+                nodeId,
+            }
+        }, '*')
+    }, [nodeId])
+
     return (
         <div className='ui-intent-recommendations__node'>
             {hasFillStyles && (
@@ -71,16 +90,21 @@ export default function IntentNodeRecommendations({
                     <div className='ui-intent-recommendations__fill-styles'>
                         <div className='ui-intent-recommendations__items'>
                             {fillStyles.map((fillStyle, idx) => (
-                                <StylePreview key={idx} {...fillStyle} onStylePreviewClick={styleIds => {
-                                    setAccordionsOpened((currentState) => {
-                                        return {
-                                            ...currentState,
-                                            // fillStyles: false,
-                                        }
-                                    });
+                                <StylePreview
+                                    key={idx}
+                                    {...fillStyle}
+                                    onStylePreviewClick={styleIds => {
+                                        setAccordionsOpened((currentState) => {
+                                            return {
+                                                ...currentState,
+                                                // fillStyles: false,
+                                            }
+                                        });
 
-                                    handleStylePreviewClick(styleIds);
-                                }}
+                                        handleStylePreviewClick(styleIds);
+                                    }}
+                                    onStylePreviewMouseOver={handleStylePreviewMouseOver}
+                                    onStylePreviewMouseOut={handleStylePreviewMouseOut}
                                 />
                             ))}
                         </div>
@@ -97,16 +121,22 @@ export default function IntentNodeRecommendations({
                     <div className='ui-intent-recommendations__fill-styles'>
                         <div className='ui-intent-recommendations__items'>
                             {textFillStyles.map((fillStyle, idx) => (
-                                <StylePreview key={idx} {...fillStyle} onStylePreviewClick={styleIds => {
-                                    setAccordionsOpened((currentState) => {
-                                        return {
-                                            ...currentState,
-                                            // textFillStyles: false,
-                                        }
-                                    });
+                                <StylePreview
+                                    key={idx}
+                                    {...fillStyle}
+                                    onStylePreviewClick={styleIds => {
+                                        setAccordionsOpened((currentState) => {
+                                            return {
+                                                ...currentState,
+                                                // textFillStyles: false,
+                                            }
+                                        });
 
-                                    handleStylePreviewClick(styleIds);
-                                }}/>
+                                        handleStylePreviewClick(styleIds);
+                                    }}
+                                    onStylePreviewMouseOver={handleStylePreviewMouseOver}
+                                    onStylePreviewMouseOut={handleStylePreviewMouseOut}
+                                />
                             ))}
                         </div>
                     </div>
@@ -123,16 +153,21 @@ export default function IntentNodeRecommendations({
                     <div className='ui-intent-recommendations__fill-styles'>
                         <div className='ui-intent-recommendations__items'>
                             {textStyles.map((textStyle, idx) => (
-                                <StylePreview key={idx} {...textStyle} onStylePreviewClick={styleIds => {
-                                    setAccordionsOpened((currentState) => {
-                                        return {
-                                            ...currentState,
-                                            // textStyles: false,
-                                        }
-                                    });
+                                <StylePreview
+                                    key={idx}
+                                    {...textStyle}
+                                    onStylePreviewClick={styleIds => {
+                                        setAccordionsOpened((currentState) => {
+                                            return {
+                                                ...currentState,
+                                                // textStyles: false,
+                                            }
+                                        });
 
-                                    handleStylePreviewClick(styleIds);
-                                }}
+                                        handleStylePreviewClick(styleIds);
+                                    }}
+                                    onStylePreviewMouseOver={handleStylePreviewMouseOver}
+                                    onStylePreviewMouseOut={handleStylePreviewMouseOut}
                                 />
                             ))}
                         </div>

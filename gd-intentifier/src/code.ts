@@ -2,6 +2,12 @@
 
 import IntentifierService from "./code/services/intentifier-service";
 
+figma.loadFontAsync({ family: 'GD Sherpa', style: 'Light' });
+figma.loadFontAsync({ family: 'GD Sherpa', style: 'Regular' });
+figma.loadFontAsync({ family: 'GD Sherpa', style: 'Medium' });
+figma.loadFontAsync({ family: 'GD Sherpa', style: 'Semibold' });
+figma.loadFontAsync({ family: 'GD Sherpa', style: 'Bold' });
+
 const PLUGIN_DIMENSIONS = {
     WIDTH: 480,
     HEIGHT: 640,
@@ -9,6 +15,29 @@ const PLUGIN_DIMENSIONS = {
 }
 
 const intentifier = new IntentifierService(figma);
+
+function clone(val) {
+    const type = typeof val
+    if (val === null) {
+        return null
+    } else if (type === 'undefined' || type === 'number' ||
+        type === 'string' || type === 'boolean') {
+        return val
+    } else if (type === 'object') {
+        if (val instanceof Array) {
+            return val.map(x => clone(x))
+        } else if (val instanceof Uint8Array) {
+            return new Uint8Array(val)
+        } else {
+            let o = {}
+            for (const key in val) {
+                o[key] = clone(val[key])
+            }
+            return o
+        }
+    }
+    throw 'unknown'
+}
 
 function handleSelectionChange() {
     const selection = figma.currentPage.selection;
@@ -40,12 +69,22 @@ figma.showUI(__html__, {
 // TODO When to unbind event?
 figma.on('selectionchange', handleSelectionChange)
 
+const temporaryStylesStore = {};
+
 type CustomMsgType = {
     type: 'updateNodeStyle';
-    nodeId: 'string';
+    nodeId: string;
     styleIds: StyleIdsType;
     refreshUI: boolean;
+} | {
+    type: 'previewNodeStyle';
+    nodeId: string;
+    styleIds: StyleIdsType;
+} | {
+    type: 'revertNodeStyle';
+    nodeId: string;
 }
+
 
 figma.ui.onmessage = (msg: CustomMsgType) => {
     if (msg.type === 'updateNodeStyle') {
@@ -53,8 +92,81 @@ figma.ui.onmessage = (msg: CustomMsgType) => {
 
         intentifier.applyStylesToNode(nodeId, styleIds);
 
+        delete temporaryStylesStore[nodeId];
+
         if (refreshUI) {
             handleSelectionChange();
         }
+    }
+
+    if (msg.type === 'previewNodeStyle') {
+        const { nodeId, styleIds = {} } = msg;
+
+        const node = figma.getNodeById(nodeId) as any;
+
+        if (!node) {
+            return;
+        }
+
+        temporaryStylesStore[nodeId] = {
+            ...typeof node.fills !== 'undefined' && {
+                fills: clone(node.fills),
+                fillStyleId: node.fillStyleId,
+            },
+            ...typeof node.strokes !== 'undefined' && {
+                strokes: clone(node.strokes),
+                strokeStyleId: node.strokeStyleId,
+            },
+            ...typeof node.textStyleId !== 'undefined' && {
+                textStyleId: node.textStyleId,
+            },
+            ...node.type === 'INSTANCE' && typeof node.children !== 'undefined' && node.children.length === 1 && node.children[0].type === 'TEXT' && {
+                children: [
+                    {
+                        fills: clone(node.children[0].fills),
+                        fillsStyleId: node.children[0].fillStyleId,
+                    }
+                ]
+            }
+        }
+
+        intentifier.applyStylesToNode(nodeId, styleIds);
+    }
+
+    if (msg.type === 'revertNodeStyle') {
+        const { nodeId } = msg;
+
+        const node = figma.getNodeById(nodeId);
+
+        if (!node) {
+            return;
+        }
+
+        const originalStyles = temporaryStylesStore[nodeId];
+
+        // Style might not exist if we ran "updateNodeStyle" before this event was fired.
+        if (!originalStyles) {
+            return;
+        }
+
+        Object.entries(originalStyles).forEach(([key, value]) => {
+            console.log({key, value})
+            if (key !== 'children') {
+                node[key] = value;
+
+                return;
+            }
+
+            const childSettings = value[0];
+            try {
+                Object.entries(childSettings).forEach(([nestedKey, nestedValue]) => {
+                    (node as any).children[0][nestedKey] = clone(nestedValue);
+                })
+            } catch(err) {
+                // Code above throws an error even though it executes just fine.
+            }
+        });
+
+        delete temporaryStylesStore[nodeId];
     }
 }

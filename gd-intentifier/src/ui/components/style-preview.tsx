@@ -9,10 +9,12 @@ interface StylePreviewProps {
     font?: string;
     styleIds: StyleIdsType;
     onStylePreviewClick: (args: StyleIdsType) => void;
+    onStylePreviewMouseOver: (args: StyleIdsType) => void;
+    onStylePreviewMouseOut: (args: StyleIdsType) => void;
 }
 
 export default function StylePreview(props: StylePreviewProps) {
-    const { name, borderColor, styleIds, onStylePreviewClick, ...cssProps } = props;
+    const { name, borderColor, styleIds, onStylePreviewClick, onStylePreviewMouseOver, onStylePreviewMouseOut, ...cssProps } = props;
 
     const [category, type] = name.includes('/') ? name.split('/') : `${name}/Preview Text`.split('/');
 
@@ -29,6 +31,13 @@ export default function StylePreview(props: StylePreviewProps) {
         <div className='ui-style-preview'
              style={memoizedStyle}
              onClick={() => onStylePreviewClick(styleIds)}
+             {...onStylePreviewMouseOver && {
+                 onMouseEnter: () => onStylePreviewMouseOver(styleIds)
+             }}
+
+             {...onStylePreviewMouseOut && {
+                 onMouseLeave: () => onStylePreviewMouseOut(styleIds)
+             }}
         >
             <div className='ui-style-preview__group'>{category}</div>
             <div className='ui-style-preview__type'>{type}</div>
