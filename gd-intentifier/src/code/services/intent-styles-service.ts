@@ -1,5 +1,4 @@
 import INTENT_CATEGORIES from "../constants/intent-categories";
-import {camelCase} from 'lodash';
 import {getPaintGrouping} from "../utils/get-paint-grouping";
 
 interface IGroupedPaintStyles {
@@ -61,7 +60,7 @@ export class IntentStylesService {
     }
 
     getRelatedPaintStyles(paintStyle: PaintStyle) {
-        const [category, type] = getPaintGrouping(paintStyle.name);
+        const [category] = getPaintGrouping(paintStyle.name);
 
         const matchedKey = this.groupedPaintStyleKeys.find(key => key === category);
 

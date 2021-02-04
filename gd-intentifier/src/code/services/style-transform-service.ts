@@ -30,8 +30,8 @@ function getFontWeight(fontStyle) {
 export default class StyleTransformService {
     intentStyles: IntentStylesService;
 
-    constructor(config) {
-        this.intentStyles = config.intentStyles;
+    constructor(intentStyles: IntentStylesService) {
+        this.intentStyles = intentStyles;
     }
 
     toPresentation(style: PaintStyle | TextStyle, isForeground = false) {

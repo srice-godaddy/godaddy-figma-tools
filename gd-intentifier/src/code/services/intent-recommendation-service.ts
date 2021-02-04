@@ -20,8 +20,6 @@ export default class IntentRecommendationService {
 
         this.backgroundStyles = this.getBackgroundStyles();
         this.foregroundStyles = this.getForegroundStyles();
-
-        console.log({background: this.backgroundStyles, foreground: this.foregroundStyles})
     }
 
     getBackgroundStyles() {
