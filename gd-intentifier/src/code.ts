@@ -88,7 +88,7 @@ type CustomMsgType = {
 
 figma.ui.onmessage = (msg: CustomMsgType) => {
     if (msg.type === 'updateNodeStyle') {
-        const { nodeId, styleIds = {}, refreshUI = false } = msg;
+        const { nodeId, styleIds = {}, refreshUI = true } = msg;
 
         intentifier.applyStylesToNode(nodeId, styleIds);
 
@@ -150,7 +150,6 @@ figma.ui.onmessage = (msg: CustomMsgType) => {
         }
 
         Object.entries(originalStyles).forEach(([key, value]) => {
-            console.log({key, value})
             if (key !== 'children') {
                 node[key] = value;
 
