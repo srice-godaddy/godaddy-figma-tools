@@ -9,9 +9,9 @@ import IntentNodeFixes from "./ui/components/intent-node-fixes";
 declare function require(path: string): any
 
 function App() {
-    const { hasSelection, hasRecommendations, recommendations, fixes, hasFixes } = useIntentRecommendations();
+    const { hasSelection, selectionCount, hasRecommendations, recommendations, fixes, hasFixes } = useIntentRecommendations();
 
-    if (recommendations.length > 1) {
+    if (selectionCount > 1) {
         return (
             <BlankState>
                 Only a single element selection is allowed at this point.
