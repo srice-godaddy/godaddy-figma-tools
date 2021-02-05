@@ -1,4 +1,7 @@
-export default function getSortedTextStyles(node: TextNode, textStyles: TextStyle[]) {
+export default function getSortedTextStyles(
+    node: TextNode,
+    textStyles: TextStyle[]
+) {
     const fontSize = node.fontSize;
     const isNumericFontSize = typeof fontSize === 'number';
 
@@ -24,13 +27,13 @@ export default function getSortedTextStyles(node: TextNode, textStyles: TextStyl
         }
 
         if (fontStyleMatchesA) {
-            return -1
+            return -1;
         }
 
         if (fontStyleMatchesB) {
-            return 1
+            return 1;
         }
 
         return 0;
-    })
+    });
 }

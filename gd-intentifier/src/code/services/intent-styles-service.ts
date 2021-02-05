@@ -1,12 +1,12 @@
-import INTENT_CATEGORIES from "../constants/intent-categories";
-import {getPaintGrouping} from "../utils/get-paint-grouping";
+import INTENT_CATEGORIES from '../constants/intent-categories';
+import { getPaintGrouping } from '../utils/get-paint-grouping';
 
 interface IGroupedPaintStyles {
     [groupName: string]: {
-        fillStyle?: PaintStyle,
-        strokeStyle?: PaintStyle,
-        textFillStyle?: PaintStyle,
-    }
+        fillStyle?: PaintStyle;
+        strokeStyle?: PaintStyle;
+        textFillStyle?: PaintStyle;
+    };
 }
 
 export class IntentStylesService {
@@ -19,7 +19,9 @@ export class IntentStylesService {
     constructor(config) {
         const { textStyles, paintStyles } = config;
 
-        this.validIntentCategories = Object.values(INTENT_CATEGORIES).map(intent => intent.toLowerCase());
+        this.validIntentCategories = Object.values(
+            INTENT_CATEGORIES
+        ).map((intent) => intent.toLowerCase());
 
         this.textStyles = this.filterStyles<TextStyle>(textStyles);
         this.paintStyles = this.filterStyles<PaintStyle>(paintStyles);
@@ -27,20 +29,26 @@ export class IntentStylesService {
         this.groupedPaintStyleKeys = Object.keys(this.groupedPaintStyles);
     }
 
-    getValidIntentStyles(): { textStyles: TextStyle[], paintStyles: PaintStyle[], groupedPaintStyles: IGroupedPaintStyles } {
+    getValidIntentStyles(): {
+        textStyles: TextStyle[];
+        paintStyles: PaintStyle[];
+        groupedPaintStyles: IGroupedPaintStyles;
+    } {
         return {
             textStyles: this.textStyles,
             paintStyles: this.paintStyles,
             groupedPaintStyles: this.groupedPaintStyles,
-        }
+        };
     }
 
     private filterStyles<P>(styles: Array<P>) {
-        return styles.filter(style => {
-            const firstWord = (style as unknown as BaseStyle).name.match(/^([\w]+)/g)[0].toLowerCase();
+        return styles.filter((style) => {
+            const firstWord = ((style as unknown) as BaseStyle).name
+                .match(/^([\w]+)/g)[0]
+                .toLowerCase();
 
             return this.validIntentCategories.includes(firstWord);
-        })
+        });
     }
 
     private groupPaintStyles(): IGroupedPaintStyles {
@@ -59,14 +67,19 @@ export class IntentStylesService {
         }, {});
     }
 
-    getRelatedPaintStyles(paintStyle: PaintStyle, excludeCurrent: boolean = false): {
+    getRelatedPaintStyles(
+        paintStyle: PaintStyle,
+        excludeCurrent: boolean = false
+    ): {
         fillStyle?: PaintStyle;
         strokeStyle?: PaintStyle;
         textFillStyle?: PaintStyle;
     } {
         const [category] = getPaintGrouping(paintStyle.name);
 
-        const matchedKey = this.groupedPaintStyleKeys.find(key => key === category);
+        const matchedKey = this.groupedPaintStyleKeys.find(
+            (key) => key === category
+        );
 
         const relatedPaintStyle = this.groupedPaintStyles[matchedKey];
 
@@ -74,12 +87,15 @@ export class IntentStylesService {
             return relatedPaintStyle;
         }
 
-        return Object.entries(relatedPaintStyle).reduce((paintStyles, [paintKey, currentPaintStyle]) => {
-            if (paintStyle.id !== currentPaintStyle.id) {
-                paintStyles[paintKey] = currentPaintStyle;
-            }
+        return Object.entries(relatedPaintStyle).reduce(
+            (paintStyles, [paintKey, currentPaintStyle]) => {
+                if (paintStyle.id !== currentPaintStyle.id) {
+                    paintStyles[paintKey] = currentPaintStyle;
+                }
 
-            return paintStyles;
-        }, {});
+                return paintStyles;
+            },
+            {}
+        );
     }
 }

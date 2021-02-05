@@ -1,13 +1,16 @@
-import * as React from "react";
+import * as React from 'react';
 
 export default function useFigmaMessage(type, onMessage) {
-    const callback = React.useCallback(event => {
-        const message = event.data.pluginMessage;
+    const callback = React.useCallback(
+        (event) => {
+            const message = event.data.pluginMessage;
 
-        if (message.type === type) {
-            onMessage(message);
-        }
-    }, [onMessage, type]);
+            if (message.type === type) {
+                onMessage(message);
+            }
+        },
+        [onMessage, type]
+    );
 
     React.useEffect(() => {
         onmessage = callback;

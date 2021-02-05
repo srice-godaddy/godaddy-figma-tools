@@ -3,4 +3,4 @@ type StyleIdsType = {
     textFillStyleId?: string;
     textStyleId?: string;
     strokeStyleId?: string;
-}
+};

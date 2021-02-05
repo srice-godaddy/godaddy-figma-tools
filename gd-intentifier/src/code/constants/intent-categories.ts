@@ -1,13 +1,13 @@
 const INTENT_CATEGORIES = {
     // Text styles.
-    "Text": "Text",
+    Text: 'Text',
 
     // Paint styles.
-    "Action": "Action",
-    "Box": "Box",
-    "Control": "Control",
-    "Feedback": "Feedback",
-    "Figure": "Figure",
-}
+    Action: 'Action',
+    Box: 'Box',
+    Control: 'Control',
+    Feedback: 'Feedback',
+    Figure: 'Figure',
+};
 
 export default INTENT_CATEGORIES;

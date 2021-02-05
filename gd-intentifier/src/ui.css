@@ -1,6 +1,6 @@
 body {
-  font: 14px sans-serif;
-  margin: 15px;
+    font: 14px sans-serif;
+    margin: 15px;
 }
 
 .ui-blank-state {
@@ -46,21 +46,20 @@ body {
 
 .ui-style-preview--checkboard {
     background-color: #b7b5b5 !important;
-    background-image:
-            linear-gradient(45deg,
+    background-image: linear-gradient(45deg,
+    rgba(0, 0, 0, .15) 25%,
+    transparent 25%,
+    transparent 75%,
+    rgba(0, 0, 0, .15) 75%,
+    rgba(0, 0, 0, .15)
+    ),
+    linear-gradient(45deg,
             rgba(0, 0, 0, .15) 25%,
             transparent 25%,
             transparent 75%,
             rgba(0, 0, 0, .15) 75%,
             rgba(0, 0, 0, .15)
-            ),
-            linear-gradient(45deg,
-            rgba(0, 0, 0, .15) 25%,
-            transparent 25%,
-            transparent 75%,
-            rgba(0, 0, 0, .15) 75%,
-            rgba(0, 0, 0, .15)
-            );
+    );
     background-size: 50px 50px;
     background-position: 0 0, 25px 25px;
 }

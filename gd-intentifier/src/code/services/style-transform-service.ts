@@ -1,27 +1,27 @@
-import {IntentStylesService} from "./intent-styles-service";
-import {figmaSolidPaintToRgb} from "../utils/color";
-import {StyleIdsType} from "../../ui/components/intent-node-recommendations";
+import { IntentStylesService } from './intent-styles-service';
+import { figmaSolidPaintToRgb } from '../utils/color';
+import { StyleIdsType } from '../../ui/components/intent-node-recommendations';
 
 const TextCaseTransform = {
     ORIGINAL: 'none',
     UPPER: 'uppercase',
     LOWER: 'lowercase',
     TITLE: 'capitalize',
-}
+};
 
 const TextDecorationTransform = {
     NONE: 'none',
     UNDERLINE: 'underline',
     STRIKETHROUGH: 'line-through',
-}
+};
 
 function getFontWeight(fontStyle) {
     const weights = {
-        'Light': 300,
-        'Regular': 400,
-        'Medium': 500,
-        'Semibold': 600,
-        'Bold': 700,
+        Light: 300,
+        Regular: 400,
+        Medium: 500,
+        Semibold: 600,
+        Bold: 700,
     };
 
     return weights[fontStyle] ? weights[fontStyle] : 400;
@@ -36,10 +36,12 @@ export default class StyleTransformService {
 
     toPresentation(style: PaintStyle | TextStyle, isForeground = false) {
         if (style.type === 'PAINT') {
-            const stylePaint = ((style as PaintStyle)?.paints?.[0] as SolidPaint);
+            const stylePaint = (style as PaintStyle)?.paints?.[0] as SolidPaint;
 
             if (!isForeground) {
-                const relatedPaintStyles = this.intentStyles.getRelatedPaintStyles(style);
+                const relatedPaintStyles = this.intentStyles.getRelatedPaintStyles(
+                    style
+                );
 
                 return this.transformRelatedPaintStyles(relatedPaintStyles);
             }
@@ -49,10 +51,12 @@ export default class StyleTransformService {
                 styleIds: {
                     fillStyleId: style.id,
                 },
-                ...stylePaint?.type === 'SOLID' && {
-                    color: `rgb(${figmaSolidPaintToRgb(stylePaint).join(', ')})`,
-                }
-            }
+                ...(stylePaint?.type === 'SOLID' && {
+                    color: `rgb(${figmaSolidPaintToRgb(stylePaint).join(
+                        ', '
+                    )})`,
+                }),
+            };
         }
 
         if (style.type === 'TEXT') {
@@ -63,29 +67,35 @@ export default class StyleTransformService {
                 lineHeight,
                 letterSpacing,
                 textCase,
-                textDecoration
-            } = (style as unknown as TextStyle & {
+                textDecoration,
+            } = (style as unknown) as TextStyle & {
                 lineHeight: {
-                    readonly value: number
-                    readonly unit: "PIXELS" | "PERCENT"
-                }
-            });
+                    readonly value: number;
+                    readonly unit: 'PIXELS' | 'PERCENT';
+                };
+            };
 
             return {
                 name,
                 fontFamily: `${family}, sans-serif`,
                 fontSize: `${fontSize}px`,
                 fontWeight: getFontWeight(fontStyle),
-                letterSpacing: letterSpacing.unit === 'PIXELS' ? `${letterSpacing.value}px` : `${letterSpacing.value}%`,
+                letterSpacing:
+                    letterSpacing.unit === 'PIXELS'
+                        ? `${letterSpacing.value}px`
+                        : `${letterSpacing.value}%`,
                 textTransform: TextCaseTransform[textCase],
                 textDecoration: TextDecorationTransform[textDecoration],
-                ...lineHeight?.value && {
-                    lineHeight: lineHeight.unit === 'PIXELS' ? `${lineHeight.value}px` : lineHeight.value
-                },
+                ...(lineHeight?.value && {
+                    lineHeight:
+                        lineHeight.unit === 'PIXELS'
+                            ? `${lineHeight.value}px`
+                            : lineHeight.value,
+                }),
                 styleIds: {
                     textStyleId: style.id,
-                }
-            }
+                },
+            };
         }
     }
 
@@ -94,9 +104,11 @@ export default class StyleTransformService {
 
         const { strokeStyle, textFillStyle, fillStyle } = relatedPaintStyles;
 
-        const fillPaint = ((fillStyle as PaintStyle)?.paints?.[0] as SolidPaint);
-        const strokePaint = ((strokeStyle as PaintStyle)?.paints?.[0] as SolidPaint);
-        const colorPaint = ((textFillStyle as PaintStyle)?.paints?.[0] as SolidPaint);
+        const fillPaint = (fillStyle as PaintStyle)?.paints?.[0] as SolidPaint;
+        const strokePaint = (strokeStyle as PaintStyle)
+            ?.paints?.[0] as SolidPaint;
+        const colorPaint = (textFillStyle as PaintStyle)
+            ?.paints?.[0] as SolidPaint;
 
         const isSolidFillColor = fillPaint?.type === 'SOLID';
         const isSolidStrokeColor = strokePaint?.type === 'SOLID';
@@ -114,14 +126,18 @@ export default class StyleTransformService {
 
         return {
             name: fillStyle.name,
-            backgroundColor: isSolidFillColor ? `rgb(${figmaSolidPaintToRgb(fillPaint).join(', ')})` : 'transparent',
+            backgroundColor: isSolidFillColor
+                ? `rgb(${figmaSolidPaintToRgb(fillPaint).join(', ')})`
+                : 'transparent',
             styleIds,
-            ...isSolidStrokeColor && {
-                borderColor: `rgb(${figmaSolidPaintToRgb(strokePaint).join(', ')})`,
-            },
-            ...isSolidPaintColor && {
+            ...(isSolidStrokeColor && {
+                borderColor: `rgb(${figmaSolidPaintToRgb(strokePaint).join(
+                    ', '
+                )})`,
+            }),
+            ...(isSolidPaintColor && {
                 color: `rgb(${figmaSolidPaintToRgb(colorPaint).join(', ')})`,
-            }
-        }
+            }),
+        };
     }
 }

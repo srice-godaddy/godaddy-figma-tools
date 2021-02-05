@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from 'react';
 import classNames from 'classnames';
-import {StyleIdsType} from "./intent-node-recommendations";
+import { StyleIdsType } from './intent-node-recommendations';
 
 interface StylePreviewProps {
     name: string;
@@ -15,36 +15,47 @@ interface StylePreviewProps {
 }
 
 export default function StylePreview(props: StylePreviewProps) {
-    const { name, borderColor, styleIds, onStylePreviewClick, onStylePreviewMouseEnter, onStylePreviewMouseLeave, ...cssProps } = props;
+    const {
+        name,
+        borderColor,
+        styleIds,
+        onStylePreviewClick,
+        onStylePreviewMouseEnter,
+        onStylePreviewMouseLeave,
+        ...cssProps
+    } = props;
 
-    const [category, type] = name.includes('/') ? name.split('/') : `${name}/Preview Text`.split('/');
+    const [category, type] = name.includes('/')
+        ? name.split('/')
+        : `${name}/Preview Text`.split('/');
 
     const memoizedStyle = React.useMemo(() => {
         return {
             ...cssProps,
-            ...borderColor && {
-                border: `2px solid ${borderColor}`
-            }
-        }
+            ...(borderColor && {
+                border: `2px solid ${borderColor}`,
+            }),
+        };
     }, [cssProps, borderColor]);
 
     return (
-        <div className={classNames('ui-style-preview', {
-            'ui-style-preview--checkboard': !styleIds.textStyleId &&
-                !memoizedStyle.backgroundColor || memoizedStyle.backgroundColor === 'transparent',
-        })}
-             style={memoizedStyle}
-             onClick={() => onStylePreviewClick(styleIds)}
-             {...onStylePreviewMouseEnter && {
-                 onMouseEnter: () => onStylePreviewMouseEnter(styleIds)
-             }}
-
-             {...onStylePreviewMouseLeave && {
-                 onMouseLeave: () => onStylePreviewMouseLeave(styleIds)
-             }}
+        <div
+            className={classNames('ui-style-preview', {
+                'ui-style-preview--checkboard':
+                    (!styleIds.textStyleId && !memoizedStyle.backgroundColor) ||
+                    memoizedStyle.backgroundColor === 'transparent',
+            })}
+            style={memoizedStyle}
+            onClick={() => onStylePreviewClick(styleIds)}
+            {...(onStylePreviewMouseEnter && {
+                onMouseEnter: () => onStylePreviewMouseEnter(styleIds),
+            })}
+            {...(onStylePreviewMouseLeave && {
+                onMouseLeave: () => onStylePreviewMouseLeave(styleIds),
+            })}
         >
-            <div className='ui-style-preview__group'>{category}</div>
-            <div className='ui-style-preview__type'>{type}</div>
+            <div className="ui-style-preview__group">{category}</div>
+            <div className="ui-style-preview__type">{type}</div>
         </div>
-    )
+    );
 }

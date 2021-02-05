@@ -1,6 +1,6 @@
-import {IntentStylesService} from "./intent-styles-service";
-import IntentRecommendationService from "./intent-recommendation-service";
-import StyleTransformService from "./style-transform-service";
+import { IntentStylesService } from './intent-styles-service';
+import IntentRecommendationService from './intent-recommendation-service';
+import StyleTransformService from './style-transform-service';
 
 export default class IntentifierService {
     figmaInstance: PluginAPI;
@@ -14,57 +14,81 @@ export default class IntentifierService {
         const textStyles = this.figmaInstance.getLocalTextStyles();
         const paintStyles = this.figmaInstance.getLocalPaintStyles();
 
-        this.intentStyles = new IntentStylesService({ textStyles, paintStyles });
-        this.intentRecommendation = new IntentRecommendationService(this.figmaInstance, this.intentStyles);
+        this.intentStyles = new IntentStylesService({
+            textStyles,
+            paintStyles,
+        });
+        this.intentRecommendation = new IntentRecommendationService(
+            this.figmaInstance,
+            this.intentStyles
+        );
         this.styleTransform = new StyleTransformService(this.intentStyles);
     }
 
     transformFixesToUI(nodesMap) {
-        const prepared = Object.entries(nodesMap).reduce((selectionMap, [nodeId, relatedPaintStyles]) => {
-            if (!relatedPaintStyles) {
+        const prepared = Object.entries(nodesMap).reduce(
+            (selectionMap, [nodeId, relatedPaintStyles]) => {
+                if (!relatedPaintStyles) {
+                    return selectionMap;
+                }
+
+                selectionMap.hasFixes = true;
+
+                selectionMap.byNodeId[nodeId] = {
+                    nodeId,
+                    fillStyle: this.styleTransform.transformRelatedPaintStyles(
+                        relatedPaintStyles
+                    ),
+                };
+
                 return selectionMap;
+            },
+            {
+                hasFixes: false,
+                byNodeId: {},
             }
-
-            selectionMap.hasFixes = true;
-
-            selectionMap.byNodeId[nodeId] = {
-                nodeId,
-                fillStyle: this.styleTransform.transformRelatedPaintStyles(relatedPaintStyles)
-            };
-
-            return selectionMap;
-        }, {
-            hasFixes: false,
-            byNodeId: {},
-        });
+        );
 
         return prepared;
     }
 
     transformRecommendationToUI(nodesMap) {
-        const presentation = Object.entries(nodesMap).reduce((selectionMap, [nodeId, selectionStyles]) => {
-            const selectionStyleEntries = Object.entries(selectionStyles || {});
+        const presentation = Object.entries(nodesMap).reduce(
+            (selectionMap, [nodeId, selectionStyles]) => {
+                const selectionStyleEntries = Object.entries(
+                    selectionStyles || {}
+                );
 
-            selectionMap.byNodeId[nodeId] = selectionStyleEntries.reduce((acc, [styleKey, styleList]) => {
-                const isForeground = styleKey === 'textFillStyles';
-                acc[styleKey] = styleList.map(style => this.styleTransform.toPresentation(style, isForeground));
+                selectionMap.byNodeId[nodeId] = selectionStyleEntries.reduce(
+                    (acc, [styleKey, styleList]) => {
+                        const isForeground = styleKey === 'textFillStyles';
+                        acc[styleKey] = styleList.map((style) =>
+                            this.styleTransform.toPresentation(
+                                style,
+                                isForeground
+                            )
+                        );
 
-                if (acc[styleKey].length) {
-                    acc.hasRecommendations = true;
-                    selectionMap.hasRecommendations = true;
-                }
+                        if (acc[styleKey].length) {
+                            acc.hasRecommendations = true;
+                            selectionMap.hasRecommendations = true;
+                        }
 
-                return acc;
-            }, {
+                        return acc;
+                    },
+                    {
+                        hasRecommendations: false,
+                        nodeId,
+                    }
+                );
+
+                return selectionMap;
+            },
+            {
                 hasRecommendations: false,
-                nodeId
-            })
-
-            return selectionMap;
-        }, {
-            hasRecommendations: false,
-            byNodeId: {},
-        });
+                byNodeId: {},
+            }
+        );
 
         return presentation;
     }
@@ -79,7 +103,8 @@ export default class IntentifierService {
         const styleIdEntries = Object.entries(styleIds);
 
         // Reset paint styles if we're sending other paint styles within `styleIds`.
-        const resetPaintStyles = styleIdEntries.length > 0 &&
+        const resetPaintStyles =
+            styleIdEntries.length > 0 &&
             styleIdEntries.every(([key, styleId]) => key !== 'textStyleId');
 
         if (resetPaintStyles) {
@@ -107,13 +132,15 @@ export default class IntentifierService {
 
             if (isInstanceNode) {
                 const nodeChildren = (node as InstanceNode).children;
-                const hasOnlyOneTextChild = nodeChildren.length === 1 && nodeChildren[0].type === 'TEXT';
+                const hasOnlyOneTextChild =
+                    nodeChildren.length === 1 &&
+                    nodeChildren[0].type === 'TEXT';
 
                 // Attempt to assign fillStyle on text node if it's the only child. POC for uxcore's Button component.
                 if (hasOnlyOneTextChild) {
                     (nodeChildren[0] as any).fillStyleId = styleId;
                 }
             }
-        })
+        });
     }
 }
