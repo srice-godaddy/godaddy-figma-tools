@@ -1,4 +1,5 @@
 import * as React from "react";
+import classNames from 'classnames';
 import {StyleIdsType} from "./intent-node-recommendations";
 
 interface StylePreviewProps {
@@ -28,7 +29,10 @@ export default function StylePreview(props: StylePreviewProps) {
     }, [cssProps, borderColor]);
 
     return (
-        <div className='ui-style-preview'
+        <div className={classNames('ui-style-preview', {
+            'ui-style-preview--checkboard': !styleIds.textStyleId &&
+                !memoizedStyle.backgroundColor || memoizedStyle.backgroundColor === 'transparent',
+        })}
              style={memoizedStyle}
              onClick={() => onStylePreviewClick(styleIds)}
              {...onStylePreviewMouseEnter && {
