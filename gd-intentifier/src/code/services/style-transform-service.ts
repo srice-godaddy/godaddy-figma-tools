@@ -104,11 +104,11 @@ export default class StyleTransformService {
 
         styleIds.fillStyleId = fillStyle.id;
 
-        if (isSolidStrokeColor) {
+        if (strokeStyle?.id) {
             styleIds.strokeStyleId = strokeStyle.id;
         }
 
-        if (isSolidPaintColor) {
+        if (textFillStyle?.id) {
             styleIds.textFillStyleId = textFillStyle.id;
         }
 

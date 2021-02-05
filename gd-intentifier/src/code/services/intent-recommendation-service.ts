@@ -142,8 +142,9 @@ export default class IntentRecommendationService {
                 const shouldHaveFillStyle = !!relatedPaintStyles?.fillStyle?.id;
                 const shouldHaveStrokeStyle = !!relatedPaintStyles?.strokeStyle?.id;
 
-                const hasFillStyle = !isEmpty(node.fills);
-                const hasStrokeStyle = !isEmpty(node.strokes);
+                const hasFillStyle = !isEmpty(node.fills) || !!node.fillStyleId;
+                const hasStrokeStyle = !isEmpty(node.strokes) || !!node.strokeStyleId;
+
                 if (
                     shouldHaveFillStyle !== hasFillStyle ||
                     shouldHaveStrokeStyle !== hasStrokeStyle ||
