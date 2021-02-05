@@ -118,6 +118,12 @@ figma.ui.onmessage = (msg: CustomMsgType) => {
                 strokeStyleId: node.strokeStyleId,
             },
             ...typeof node.textStyleId !== 'undefined' && {
+                fontSize: node.fontSize,
+                fontName: clone(node.fontName),
+                textCase: node.textCase,
+                textDecoration: node.textDecoration,
+                letterSpacing: clone(node.letterSpacing),
+                lineHeight: clone(node.lineHeight),
                 textStyleId: node.textStyleId,
             },
             ...node.type === 'INSTANCE' && typeof node.children !== 'undefined' && node.children.length === 1 && node.children[0].type === 'TEXT' && {
