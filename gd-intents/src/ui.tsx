@@ -2,9 +2,17 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './ui.css';
 
-declare function require(path: string): any;
-
 class App extends React.Component {
+    constructor() {
+        // @ts-ignore
+        super();
+
+        this.state = {
+            loaded: false,
+            themes: null
+        };
+    }
+
     onCreate = () => {
         parent.postMessage({ pluginMessage: { type: 'create-styles' } }, '*');
     }
@@ -13,17 +21,42 @@ class App extends React.Component {
         parent.postMessage({ pluginMessage: { type: 'delete-all-styles' } }, '*');
     }
 
-    onCancel = () => {
-        parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
+    componentDidMount() {
+        const self = this;
+
+        fetch('https://local.gasket.dev-godaddy.com:8443/api/v1/public/themes')
+            .then(response => response.json())
+            .then(themes => {
+                self.setState({
+                    loaded: true,
+                    themes: themes
+                });
+            });
     }
 
     render() {
+        let content = <div><p>Loading...</p></div>;
+
+        // @ts-ignore
+        if (this.state.loaded) {
+            content = <div>
+                <p>Pick a GoDaddy theme to work with:</p>
+                <select name='theme' id='theme'>
+                    {
+                        // @ts-ignore
+                        this.state.themes.map((value, index) => <option key={ index } value={ value.ID }>{ value.name }</option>)
+                    }
+                </select>
+                <button id="create" onClick={this.onCreate}>Select Theme</button>
+
+                <p>If you would like to go back to a clean slate, wipe all styles that are specifically in this file.</p>
+                <button id="clear" onClick={this.onClearStyles}>Clear Styles</button>
+            </div>;
+        }
+
         return <div>
-            <h2>Intent Styles</h2>
-            <p>Use this plugin to create all intent styles from the Pro theme.</p>
-            <button id="create" onClick={this.onCreate}>Create</button>
-            <button id="clear" onClick={this.onClearStyles}>Clear Styles</button>
-            <button id="cancel" onClick={this.onCancel}>Cancel</button>
+            <h2>GoDaddy Themes</h2>
+            { content }
         </div>;
     }
 }
