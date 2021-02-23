@@ -3,6 +3,7 @@
     "target": "es2017",
     "jsx": "react",
     "skipLibCheck": true,
+    "moduleResolution": "Node",
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@figma"

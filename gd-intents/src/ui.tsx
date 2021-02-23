@@ -3,6 +3,9 @@ import * as ReactDOM from 'react-dom';
 import './ui.css';
 
 class App extends React.Component {
+    themeSelect: HTMLSelectElement
+
+
     constructor() {
         // @ts-ignore
         super();
@@ -13,8 +16,21 @@ class App extends React.Component {
         };
     }
 
+    themeSelectRef = (element: HTMLSelectElement) => {
+        this.themeSelect = element;
+    }
+
     onCreate = () => {
-        parent.postMessage({ pluginMessage: { type: 'create-styles' } }, '*');
+        this.setState({
+            loaded: false
+        });
+
+        const themeId = parseInt(this.themeSelect.value);
+        fetch('https://local.gasket.dev-godaddy.com:8443/api/v1/public/themes/' + themeId)
+            .then(response => response.json())
+            .then(themeData => {
+                parent.postMessage({ pluginMessage: { type: 'create-styles', themeData } }, '*');
+            });
     }
 
     onClearStyles = () => {
@@ -41,7 +57,7 @@ class App extends React.Component {
         if (this.state.loaded) {
             content = <div>
                 <p>Pick a GoDaddy theme to work with:</p>
-                <select name='theme' id='theme'>
+                <select name='theme' id='theme' ref={ this.themeSelectRef }>
                     {
                         // @ts-ignore
                         this.state.themes.map((value, index) => <option key={ index } value={ value.ID }>{ value.name }</option>)
