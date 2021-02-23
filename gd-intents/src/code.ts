@@ -1,6 +1,9 @@
 import { loadTheme, deleteAllStyles } from './services/theme-loader';
 
-figma.showUI(__html__);
+figma.showUI(__html__, {
+  width: 480,
+  height: 200,
+});
 
 figma.ui.onmessage = async msg => {
   if (msg.type === 'create-styles') {
