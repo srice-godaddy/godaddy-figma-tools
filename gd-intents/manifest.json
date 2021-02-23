@@ -1,7 +1,7 @@
 {
-  "name": "gd-intents",
+  "name": "GoDaddy Theme Picker",
   "id": "923920906926961367",
   "api": "1.0.0",
-  "main": "code.js",
-  "ui": "ui.html"
+  "main": "dist/code.js",
+  "ui": "dist/ui.html"
 }
