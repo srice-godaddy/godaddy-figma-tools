@@ -2,9 +2,13 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './ui.css';
 
+let currentThemeId = null;
+onmessage = (event) => {
+    currentThemeId = event.data.pluginMessage;
+};
+
 class App extends React.Component {
     themeSelect: HTMLSelectElement
-
 
     constructor() {
         // @ts-ignore
@@ -26,7 +30,7 @@ class App extends React.Component {
         });
 
         const themeId = parseInt(this.themeSelect.value);
-        fetch('https://local.gasket.dev-godaddy.com:8443/api/v1/public/themes/' + themeId)
+        fetch('https://care-form.int.godaddy.com/api/v1/public/themes/' + themeId)
             .then(response => response.json())
             .then(themeData => {
                 parent.postMessage({ pluginMessage: { type: 'create-styles', themeData } }, '*');
@@ -40,13 +44,17 @@ class App extends React.Component {
     componentDidMount() {
         const self = this;
 
-        fetch('https://local.gasket.dev-godaddy.com:8443/api/v1/public/themes')
+        fetch('https://care-form.int.godaddy.com/api/v1/public/themes')
             .then(response => response.json())
             .then(themes => {
                 self.setState({
                     loaded: true,
                     themes: themes
                 });
+
+                if (currentThemeId) {
+                    self.themeSelect.value = currentThemeId;
+                }
             });
     }
 
