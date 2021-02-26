@@ -32,6 +32,7 @@ export async function loadTheme(themeData) {
     const paintStyles = figma.getLocalPaintStyles();
     const textStyles = figma.getLocalTextStyles();
     const styleMap = {};
+    const styleUsed = {};
 
     for (const paintStyle of paintStyles) {
         styleMap[paintStyle.name] = paintStyle;
@@ -51,6 +52,7 @@ export async function loadTheme(themeData) {
         }
 
         styleMap[colorIntent.name].paints = getColorArray(colorIntent);
+        styleUsed[colorIntent.name] = 1;
     }
 
     for (const textIntent of themeData.intents.text) {
@@ -69,6 +71,23 @@ export async function loadTheme(themeData) {
             style: fontStyle
         });
         styleMap[textIntent.name].fontSize = textIntent.size;
+        styleUsed[textIntent.name] = 1;
+    }
+
+    for (const paintStyle of paintStyles) {
+        if (styleUsed[paintStyle.name]) {
+            continue;
+        }
+
+        paintStyle.remove();
+    }
+
+    for (const textStyle of textStyles) {
+        if (styleUsed[textStyle.name]) {
+            continue;
+        }
+
+        textStyle.remove();
     }
 }
 
