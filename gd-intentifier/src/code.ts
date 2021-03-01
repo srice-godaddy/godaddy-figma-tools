@@ -2,11 +2,9 @@
 
 import IntentifierService from './code/services/intentifier-service';
 
-figma.loadFontAsync({ family: 'GD Sherpa', style: 'Light' });
-figma.loadFontAsync({ family: 'GD Sherpa', style: 'Regular' });
-figma.loadFontAsync({ family: 'GD Sherpa', style: 'Medium' });
-figma.loadFontAsync({ family: 'GD Sherpa', style: 'Semibold' });
-figma.loadFontAsync({ family: 'GD Sherpa', style: 'Bold' });
+for (const font of figma.getLocalTextStyles()) {
+    figma.loadFontAsync(font.fontName);
+}
 
 const PLUGIN_DIMENSIONS = {
     WIDTH: 480,

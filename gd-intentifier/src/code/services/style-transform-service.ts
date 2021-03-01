@@ -90,7 +90,7 @@ export default class StyleTransformService {
                     lineHeight:
                         lineHeight.unit === 'PIXELS'
                             ? `${lineHeight.value}px`
-                            : lineHeight.value,
+                            : (lineHeight.value / 100),
                 }),
                 styleIds: {
                     textStyleId: style.id,

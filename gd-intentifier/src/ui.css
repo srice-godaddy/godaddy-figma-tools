@@ -29,10 +29,21 @@ body {
     padding: 15px 10px;
     text-align: center;
     transition: opacity .3s ease-in-out;
+    position: relative;
+    height: 35px;
 }
 
 .ui-intent-recommendations__items .ui-style-preview:hover {
     opacity: 1;
+}
+
+.ui-style-preview-parent {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
 }
 
 .ui-style-preview__group {

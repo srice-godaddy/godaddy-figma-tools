@@ -54,8 +54,10 @@ export default function StylePreview(props: StylePreviewProps) {
                 onMouseLeave: () => onStylePreviewMouseLeave(styleIds),
             })}
         >
-            <div className="ui-style-preview__group">{category}</div>
-            <div className="ui-style-preview__type">{type}</div>
+            <div className='ui-style-preview-parent'>
+                <div className="ui-style-preview__group">{category}</div>
+                <div className="ui-style-preview__type">{type}</div>
+            </div>
         </div>
     );
 }

@@ -52,7 +52,9 @@ class App extends React.Component {
                     themes: themes
                 });
 
-                if (currentThemeId) {
+                const currentID = parseInt(currentThemeId, 10);
+
+                if (currentThemeId && themes.filter(theme => theme.ID === currentID).length > 0) {
                     self.themeSelect.value = currentThemeId;
                 }
             });
