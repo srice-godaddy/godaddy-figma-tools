@@ -71,6 +71,10 @@ export async function loadTheme(themeData) {
             style: fontStyle
         });
         styleMap[textIntent.name].fontSize = textIntent.size;
+        styleMap[textIntent.name].lineHeight = <LineHeight>({
+            value: textIntent.lineHeight * 100,
+            unit: 'PERCENT'
+        });
         styleUsed[textIntent.name] = 1;
     }
 
