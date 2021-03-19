@@ -12,6 +12,10 @@ div.main p.loading {
     font-size: 24px;
 }
 
+div.main button {
+    font-family: gd-sage,"Times","Times New Roman",serif;
+}
+
 div.main select {
     font-family: gd-sage,"Times","Times New Roman",serif;
     font-size: 20px;
@@ -23,7 +27,14 @@ div.button-container {
     text-align: right;
 }
 
-div.main button.primary, div.main button.secondary {
+div.main a.link-button {
+    font-size: 16px;
+    margin-top: 10px;
+    text-decoration: none;
+    text-align: center;
+}
+
+div.main button.primary, div.main button.secondary, div.main a.link-button {
     cursor: pointer;
     border: 3px solid black;
     padding: 10px;
@@ -32,20 +43,20 @@ div.main button.primary, div.main button.secondary {
     margin-left: 5px;
 }
 
-div.main button.primary {
+div.main button.primary, div.main a.link-button.primary {
     background-color: black;
     color: white;
 }
 
-div.main button.primary:hover {
+div.main button.primary:hover, div.main a.link-button.primary:hover {
     background-color: #111;
 }
 
-div.main button.secondary {
+div.main button.secondary, div.main a.link-button.secondary  {
     background-color: white;
     color: black;
 }
 
-div.main button.secondary:hover {
+div.main button.secondary:hover, div.main a.link-button.secondary:hover {
     background-color: #eee;
 }

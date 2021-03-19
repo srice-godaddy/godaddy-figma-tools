@@ -1,8 +1,8 @@
 import { loadTheme, deleteAllStyles } from './services/theme-loader';
 
 figma.showUI(__html__, {
-  width: 480,
-  height: 200,
+  width: 464,
+  height: 276,
 });
 
 figma.ui.postMessage(figma.root.getPluginData('theme'));

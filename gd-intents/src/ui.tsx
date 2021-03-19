@@ -30,7 +30,7 @@ class App extends React.Component {
         });
 
         const themeId = parseInt(this.themeSelect.value);
-        fetch('https://care-form.int.godaddy.com/api/v1/public/themes/' + themeId)
+        fetch('https://themes.pts.godaddy.com/api/v1/public/themes/' + themeId)
             .then(response => response.json())
             .then(themeData => {
                 parent.postMessage({ pluginMessage: { type: 'create-styles', themeData } }, '*');
@@ -44,7 +44,7 @@ class App extends React.Component {
     componentDidMount() {
         const self = this;
 
-        fetch('https://care-form.int.godaddy.com/api/v1/public/themes')
+        fetch('https://themes.pts.godaddy.com/api/v1/public/themes')
             .then(response => response.json())
             .then(themes => {
                 self.setState({
@@ -74,9 +74,12 @@ class App extends React.Component {
                     }
                 </select>
                 <div className='button-container'>
+                    <a href='https://themes.pts.godaddy.com/' target='_blank' className='link-button secondary' style={{marginLeft: '0'}}>Manage Themes</a>
                     <button id="clear" onClick={this.onClearStyles} className='secondary'>Clear Theme Styles</button>
                     <button id="create" onClick={this.onCreate} className='primary'>Select Theme</button>
                 </div>
+
+                <p style={{ marginTop: '25px', fontSize: '12px'}}><b>Note:</b> What to do if you don't see your theme here, or if a color is wrong? Just hit the "Manage Themes" link and you'll be able to correct it. Logging in with Okta required.</p>
             </div>;
         }
 
