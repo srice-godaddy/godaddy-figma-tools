@@ -60,6 +60,7 @@ async function doImport() {
 
   figma.currentPage = pageReferences['readme'];
   const instance = component.createInstance();
+  figma.viewport.scrollAndZoomIntoView([instance]);
 
   undeletedPage.remove();
   figma.closePlugin();
