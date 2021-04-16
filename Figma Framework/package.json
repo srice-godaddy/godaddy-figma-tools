@@ -1,0 +1,14 @@
+{
+  "name": "figma-framework",
+  "version": "1.0.0",
+  "description": "A plugin for adding framework resources to the current file.",
+  "main": "code.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.19.0"
+  }
+}
