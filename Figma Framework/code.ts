@@ -24,22 +24,24 @@ async function doImport() {
     readme: { r: 0, g: 0, b: 0 }
   };
 
-  let undeletedPage = null;
   const pageReferences = {};
 
   const pageList = [
     ...figma.root.children
   ];
 
+  const existingPageMap = {};
+
   for (const page of pageList) {
-    try {
-      page.remove();
-    } catch (e) {
-      undeletedPage = page;
-    }
+    existingPageMap[page.name] = page;
   }
 
   for (const key of Object.keys(pages)) {
+    if (existingPageMap[pages[key]]) {
+      pageReferences[key] = existingPageMap[pages[key]];
+      continue;
+    }
+
     const page = figma.createPage();
     page.name = pages[key];
 
@@ -59,10 +61,20 @@ async function doImport() {
   const component = await figma.importComponentByKeyAsync('c16864eed305a49f64195148cddcad1e5582caf9')
 
   figma.currentPage = pageReferences['readme'];
-  const instance = component.createInstance();
-  figma.viewport.scrollAndZoomIntoView([instance]);
 
-  undeletedPage.remove();
+  const elements = figma.currentPage.children;
+  for (const element of elements) {
+    element.remove();
+  }
+
+  const nodes = [];
+
+  for (const element of component.children) {
+    nodes.push(element.clone());
+  }
+
+  figma.viewport.scrollAndZoomIntoView(nodes);
+
   figma.closePlugin();
 }
 
