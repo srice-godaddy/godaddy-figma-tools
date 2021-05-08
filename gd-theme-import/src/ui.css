@@ -1,0 +1,62 @@
+div.main {
+    font-family: gd-sage,"Times","Times New Roman",serif;
+    padding: 20px;
+}
+
+div.main p {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+div.main p.loading {
+    font-size: 24px;
+}
+
+div.main button {
+    font-family: gd-sage,"Times","Times New Roman",serif;
+}
+
+div.main select {
+    font-family: gd-sage,"Times","Times New Roman",serif;
+    font-size: 20px;
+    padding: 10px 0;
+    width: 100%;
+}
+
+div.button-container {
+    text-align: right;
+}
+
+div.main a.link-button {
+    font-size: 16px;
+    margin-top: 10px;
+    text-decoration: none;
+    text-align: center;
+}
+
+div.main button.primary, div.main button.secondary, div.main a.link-button {
+    cursor: pointer;
+    border: 3px solid black;
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 16px;
+    margin-left: 5px;
+}
+
+div.main button.primary, div.main a.link-button.primary {
+    background-color: black;
+    color: white;
+}
+
+div.main button.primary:hover, div.main a.link-button.primary:hover {
+    background-color: #111;
+}
+
+div.main button.secondary, div.main a.link-button.secondary  {
+    background-color: white;
+    color: black;
+}
+
+div.main button.secondary:hover, div.main a.link-button.secondary:hover {
+    background-color: #eee;
+}
