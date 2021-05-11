@@ -751,12 +751,7 @@ class App extends React.Component {
                     },
                     "intents.ux.text.fontFamily": {
                     "type": "fontgroup",
-                    "value": [
-                        "\"gdsherpa\"",
-                        "Helvetica",
-                        "Arial",
-                        "sans-serif"
-                    ]
+                    "value": ["'gdsherpa'","Helvetica","Arial","sans-serif"]
                     },
                     "intents.ux.text.fontSize": {
                     "type": "static",
@@ -772,12 +767,7 @@ class App extends React.Component {
                     },
                     "intents.ux.textAction.fontFamily": {
                     "type": "fontgroup",
-                    "value": [
-                        "\"gdsherpa\"",
-                        "Helvetica",
-                        "Arial",
-                        "sans-serif"
-                    ]
+                    "value": ["'gdsherpa'","Helvetica","Arial","sans-serif"]
                     },
                     "intents.ux.textAction.fontSize": {
                     "type": "static",
@@ -793,12 +783,7 @@ class App extends React.Component {
                     },
                     "intents.ux.textCaption.fontFamily": {
                     "type": "fontgroup",
-                    "value": [
-                        "\"gdsherpa\"",
-                        "Helvetica",
-                        "Arial",
-                        "sans-serif"
-                    ]
+                    "value": ["'gdsherpa'","Helvetica","Arial","sans-serif"]
                     },
                     "intents.ux.textCaption.fontSize": {
                     "type": "static",
@@ -814,11 +799,7 @@ class App extends React.Component {
                     },
                     "intents.ux.textHeading.fontFamily": {
                     "type": "fontgroup",
-                    "value": [
-                        "\"gd-sage\"",
-                        "\"Times New Roman\"",
-                        "serif"
-                    ]
+                    "value": ["'gd-sage'","'Times New Roman'","serif"]
                     },
                     "intents.ux.textHeading.fontSize": {
                     "type": "static",
@@ -834,12 +815,7 @@ class App extends React.Component {
                     },
                     "intents.ux.textInput.fontFamily": {
                     "type": "fontgroup",
-                    "value": [
-                        "\"gdsherpa\"",
-                        "Helvetica",
-                        "Arial",
-                        "sans-serif"
-                    ]
+                    "value": ["'gdsherpa'","Helvetica","Arial","sans-serif"]
                     },
                     "intents.ux.textInput.fontSize": {
                     "type": "static",
@@ -855,12 +831,7 @@ class App extends React.Component {
                     },
                     "intents.ux.textLabel.fontFamily": {
                     "type": "fontgroup",
-                    "value": [
-                        "\"gdsherpa\"",
-                        "Helvetica",
-                        "Arial",
-                        "sans-serif"
-                    ]
+                    "value": ["'gdsherpa'","Helvetica","Arial","sans-serif"]
                     },
                     "intents.ux.textLabel.fontSize": {
                     "type": "static",
@@ -876,12 +847,7 @@ class App extends React.Component {
                     },
                     "intents.ux.textParagraph.fontFamily": {
                     "type": "fontgroup",
-                    "value": [
-                        "\"gdsherpa\"",
-                        "Helvetica",
-                        "Arial",
-                        "sans-serif"
-                    ]
+                    "value": ["'gdsherpa'","Helvetica","Arial","sans-serif"]
                     },
                     "intents.ux.textParagraph.fontSize": {
                     "type": "static",
@@ -897,12 +863,7 @@ class App extends React.Component {
                     },
                     "intents.ux.textTitle.fontFamily": {
                     "type": "fontgroup",
-                    "value": [
-                        "\"gdsherpa\"",
-                        "Helvetica",
-                        "Arial",
-                        "sans-serif"
-                    ]
+                    "value": ["'gdsherpa'","Helvetica","Arial","sans-serif"]
                     },
                     "intents.ux.textTitle.fontSize": {
                     "type": "static",
