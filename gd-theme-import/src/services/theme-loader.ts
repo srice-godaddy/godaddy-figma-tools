@@ -188,7 +188,7 @@ function createFramesForThemes(themeArray, parent){
         newFrame.paddingBottom = 8;
         newFrame.primaryAxisSizingMode = "AUTO";
         newFrame.counterAxisSizingMode = "AUTO";
-        newFrame.counterAxisAlignItems = "MAX";
+        newFrame.counterAxisAlignItems = "MIN";
         newFrame.layoutMode = "VERTICAL";
         newFrame.itemSpacing = 8;
         parent.appendChild(newFrame);
@@ -221,7 +221,8 @@ export async function loadTheme(themeData) {
         figma.notify("Multiple Intents Pages Detected. Using first one.")
         intentsPage = intentsPages[0];
     }
-
+    figma.currentPage = intentsPage;
+    
     // Set up our intents frame and text and color frames if they don't exist
     if (intentsPage.findChildren((e)=> {return e.name == "Intents" }).length == 0){
         const newFrame = figma.createFrame();
@@ -229,6 +230,8 @@ export async function loadTheme(themeData) {
         newFrame.itemSpacing = 40;
         newFrame.layoutMode = "VERTICAL";
         newFrame.layoutGrow = 1;
+        newFrame.primaryAxisSizingMode = "AUTO"; 
+        newFrame.counterAxisSizingMode = "AUTO";
         intentsPage.appendChild(newFrame);
     }
     const intentsFrame = intentsPage.findChildren((e)=> {return e.name == "Intents" })[0];
@@ -238,7 +241,8 @@ export async function loadTheme(themeData) {
         newFrame.name = "Color Intents";
         newFrame.itemSpacing = 24;
         newFrame.layoutMode = "HORIZONTAL";
-        newFrame.layoutGrow = 1;
+        newFrame.primaryAxisSizingMode = "AUTO"; 
+        newFrame.counterAxisSizingMode = "AUTO";
         intentsFrame.appendChild(newFrame);
     }
     if (intentsFrame.findChildren((e)=> {return e.name == "Text Intents" }).length == 0){
@@ -246,7 +250,8 @@ export async function loadTheme(themeData) {
         newFrame.name = "Text Intents";
         newFrame.itemSpacing = 24;
         newFrame.layoutMode = "HORIZONTAL";
-        newFrame.layoutGrow = 1;
+        newFrame.primaryAxisSizingMode = "AUTO"; 
+        newFrame.counterAxisSizingMode = "AUTO"; 
         intentsFrame.appendChild(newFrame);
     }
 
