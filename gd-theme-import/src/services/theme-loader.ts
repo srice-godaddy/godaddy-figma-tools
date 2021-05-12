@@ -83,10 +83,10 @@ function transformThemeJson (themeData){
         color: [],
         text: {},
     }
-    const theme = JSON.parse(themeData);
-    const intentKeys = Object.keys(theme.root.values);
+
+    const intentKeys = Object.keys(themeData.themes[0].data.root.values);
     for (const key in intentKeys) {
-        const thisIntent = theme.root.values[intentKeys[key]];
+        const thisIntent = themeData.themes[0].data.root.values[intentKeys[key]];
         const thisStyle = {
             name: intentKeys[key],
             type: null,
@@ -149,7 +149,7 @@ function transformThemeJson (themeData){
             switch (thisTypeAttr) {
 
                 case "fontFamily":
-                    intents.text[thisStyle.name].value.font = thisIntent.value[0].replace(/\'/g, '');
+                    intents.text[thisStyle.name].value.font = thisIntent.value[0].replace(/\"/g, '');
 
                     // Fix for proper font names
                     if (intents.text[thisStyle.name].value.font == "gdsherpa") {
