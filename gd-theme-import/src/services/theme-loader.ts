@@ -1,21 +1,3 @@
-function getColorArray(color) {
-    if (color.alpha === 0) {
-        return [];
-    }
-
-    return [
-        <SolidPaint>({
-            type: 'SOLID',
-            color: <RGB>({
-                r: color.red / 255,
-                g: color.green / 255,
-                b: color.blue / 255
-            }),
-            opacity: color.alpha / 255
-        })
-    ];
-}
-
 function getFontType(weight) {
     const weights = {
         300: 'Light',
@@ -54,17 +36,43 @@ function rgbaToFigma(rgba) {
     } : null;
 }
 
+function textColor (color){
+    const myColor = color.color;
+    if (color.opacity != null) {
+        myColor.opacity = color.opacity; 
+    } else {
+        myColor.opacity = 1;
+    }
+    return (((myColor.r*255*299)+(myColor.g*255*587)+(myColor.b*255*114))/1000 >= 128 || myColor.opacity < 0.5)? [<SolidPaint>({
+        type: 'SOLID',
+        color: <RGB>({
+            r: 0,
+            g: 0,
+            b: 0
+        }) 
+    })]: [<SolidPaint>({
+        type: 'SOLID',
+        color: <RGB>({
+            r: 1,
+            g: 1,
+            b: 1
+        }) 
+    })];
+}
+
 // Create our friendly name
 function friendlyName(name){
     function upperCase ( p1 ){ // This might need to be (match, p1, offset, string) or some variant of that.
         return p1.toUpperCase();
     }
-    return "Intents/" + name.replace(/intents\.ux\.?/,'') // Trim off the beginning bits
+    return name.replace(/intents\.ux\./,'Intents_ux/')
+    .replace(/intents/,'Intents (component)')
     .replace(/\./g, "/") // Dots to slashes
+    .replace(/_/g, ".") // Underscore back to dot (intents.ux)
     .replace(/font.*$|lineHeight$/,'') // Type styles
-    .replace('Color','') // Color is redundant on color attributes in Figma
-    .replace(/([A-Z])/g, ' $1') // Add a space before capital letters
-    .replace(/\/([a-z])|^([a-z])/g, upperCase) // Convert from pascalCase to Title Case
+    .replace(/([A-Z])(?!olor)/g, ' $1') // Add a space before capital letters (unless Color)
+    .replace('ux ','ux') // remove spaces after lowercase 'ux'
+    .replace(/\/([a-tv-z])|^([a-tv-z])|\/(u)(?!x)|^(u)(?!x)/g, upperCase) // Convert from pascalCase to Title Case
     .replace(/ (Chosen|Focused|Hovered|Primary|Secondary|Tertiary|High Contrast|Highlight|Completed|Low Contrast|Info|Internal|Neutral|Passive|Success|Warning|Critical)/g, '/$1') // Add a / before state modifiers
     .replace(/Text (Action|Caption|Heading|Input|Label|Paragraph|Title)/g, '$1') // Put text styles in a directory
     .replace(/^ /,'');
@@ -222,7 +230,7 @@ export async function loadTheme(themeData) {
         intentsPage = intentsPages[0];
     }
     figma.currentPage = intentsPage;
-    
+
     // Set up our intents frame and text and color frames if they don't exist
     if (intentsPage.findChildren((e)=> {return e.name == "Intents" }).length == 0){
         const newFrame = figma.createFrame();
@@ -274,7 +282,9 @@ export async function loadTheme(themeData) {
             colorStyle.paints = [colorIntent.value]; // Currently only supports a single value here, so no multi-color intents yet
 
             styleMap[colorIntent.name] = colorStyle;
-            const styleFrame = createFramesForThemes(colorIntent.friendlyName.replace('Intents/','').split('/'),colorIntentsFrame);
+            let framesArray = colorIntent.friendlyName.split('/');
+            framesArray.shift();
+            const styleFrame = createFramesForThemes(framesArray,colorIntentsFrame);
             styleFrame.counterAxisAlignItems = "CENTER";
             styleFrame.primaryAxisSizingMode= "FIXED";
             styleFrame.layoutMode = "VERTICAL";
@@ -287,11 +297,13 @@ export async function loadTheme(themeData) {
             let textLabel = figma.createText();
             textLabel.characters = colorIntent.name;
             textLabel.name = "Intent Name";
+            textLabel.fills = textColor(colorIntent.value);
             styleFrame.appendChild(textLabel);
             // Add intent name (designers)
             textLabel = figma.createText();
             textLabel.characters = colorIntent.friendlyName;
             textLabel.name = "Friendly Name";
+            textLabel.fills = textColor(colorIntent.value);
             styleFrame.appendChild(textLabel);
 
         }
@@ -311,8 +323,9 @@ export async function loadTheme(themeData) {
             textStyle.description = textIntent.name;
 
             styleMap[textStyle.name] = textStyle;
-
-            const styleFrame = createFramesForThemes(textIntent.friendlyName.replace('Intents/','').split('/'),colorIntentsFrame);
+            let framesArray = textIntent.friendlyName.split('/');
+            framesArray.shift();
+            const styleFrame = createFramesForThemes(framesArray,textIntentsFrame);
             styleFrame.itemSpacing = 8;
 
             // Add intent name (engineers)
@@ -327,10 +340,7 @@ export async function loadTheme(themeData) {
             textLabel.name = "Friendly Name";
             textLabel.textStyleId = textStyle.id;
             styleFrame.appendChild(textLabel);
-
         }
-
-        
 
         styleMap[textIntent.friendlyName].fontName = <FontName>({
             family: textIntent.value.font,

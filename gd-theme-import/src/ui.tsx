@@ -29,6 +29,8 @@ class App extends React.Component {
             loaded: false
         });
         // HARD CODING THIS FOR NOW = GODADDY THEME FROM UXP
+        
+        // Fetch an entire theme from this endpoint: fetch('https://theme-api.uxp.godaddy.com/v1/themes?alias=godaddy:brand')
         const themeData = `
             {
                 "root": {
@@ -1653,17 +1655,17 @@ class App extends React.Component {
     componentDidMount() {
         const self = this;
 
-        fetch('https://themes.pts.godaddy.com/api/v1/public/themes')
+        fetch('http://localhost:8080/https://theme-api.uxp.godaddy.com/v1/themes') // TODO: Remove the need for this cors proxy!
             .then(response => response.json())
             .then(themes => {
                 self.setState({
                     loaded: true,
-                    themes: themes
+                    themes: themes.themes
                 });
 
-                const currentID = parseInt(currentThemeId, 10);
+                const currentID = currentThemeId;
 
-                if (currentThemeId && themes.filter(theme => theme.ID === currentID).length > 0) {
+                if (currentThemeId && themes.filter(theme => theme.id === currentID).length > 0) {
                     self.themeSelect.value = currentThemeId;
                 }
             });
@@ -1675,11 +1677,11 @@ class App extends React.Component {
         // @ts-ignore
         if (this.state.loaded) {
             content = <div>
-                <p>Pick a GoDaddy theme to import:</p>
+                <p>Pick a theme to import:</p>
                 <select name='theme' id='theme' ref={ this.themeSelectRef }>
                     {
                         // @ts-ignore
-                        this.state.themes.map((value, index) => <option key={ index } value={ value.ID }>{ value.name }</option>)
+                        this.state.themes.map((value, index) => <option key={ index } value={ value.id }>{ value.alias }</option>)
                     }
                 </select>
                 <div className='button-container'>
