@@ -28,11 +28,9 @@ class App extends React.Component {
         this.setState({
             loaded: false
         });
-        // HARD CODING THIS FOR NOW = GODADDY THEME FROM UXP
-        
-        // Fetch an entire theme from this endpoint: fetch('https://theme-api.uxp.godaddy.com/v1/themes?alias=godaddy:brand')
+
         const themeId = this.themeSelect.value;
-        fetch('http://localhost:8080/https://theme-api.uxp.godaddy.com/v1/themes?themeId=' + themeId)
+        fetch('http://localhost:8080/https://theme-api.uxp.godaddy.com/v1/themes?themeId=' + themeId) // TODO: Remove the need for this cors proxy!
             .then(response => response.json())
             .then(themeData => {
                 parent.postMessage({ pluginMessage: { type: 'create-styles', themeData } }, '*');
