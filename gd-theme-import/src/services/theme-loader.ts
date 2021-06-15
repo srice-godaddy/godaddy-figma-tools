@@ -181,6 +181,45 @@ function transformThemeJson (themeData){
             }
         }
     }
+    // Process through font sizes
+
+    const textMultiplier = 1.125;
+    const textKeys = Object.keys(intents.text);
+    const maxPositive = 6;
+    const maxNegative = 2;
+    for (let key = 0; key < textKeys.length; key++)
+    {
+        let thisIntent = intents.text[textKeys[key]];
+        
+        if (thisIntent.name.indexOf("intents.ux.") >=0) // If this is non-component default text style
+        {
+
+            for (let i=0;i<=maxPositive;i++){
+                intents.text[thisIntent.name+(i)] = {
+                    name: thisIntent.name+i,
+                    friendlyName: thisIntent.friendlyName + "/" + i,
+                    value: { 
+                        font: thisIntent.value.font,
+                        weight: thisIntent.value.weight,
+                        size: i > 0 ? intents.text[thisIntent.name+(i-1)].value.size * textMultiplier : thisIntent.value.size,
+                        lineHeight: thisIntent.value.lineHeight,
+                    }
+                }
+            }
+            for (let i = -1 ; i >= 0 - maxNegative ; i--){
+                intents.text[thisIntent.name+i] = {
+                    name: thisIntent.name+(i),
+                    friendlyName: thisIntent.friendlyName + "/" + i,
+                    value: {
+                        font: thisIntent.value.font,
+                        weight: thisIntent.value.weight,
+                        size: intents.text[thisIntent.name+(i+1)].value.size / textMultiplier,
+                        lineHeight: thisIntent.value.lineHeight,
+                    }
+                }
+            }
+        }
+    }
     return intents;
 
 }
@@ -268,10 +307,35 @@ export async function loadTheme(themeData) {
 
     for (const paintStyle of paintStyles) {
         styleMap[paintStyle.name] = paintStyle;
+        
+        // Handle Aliases: Description = only the intent name currently
+        /*if (typeof(intents.color[paintStyle.description])!=='undefined')
+        {
+            paintStyle.paints = [intents.color[paintStyle.description].colorIntent.value];
+        }*/
     }
 
     for (const textStyle of textStyles) {
         styleMap[textStyle.name] = textStyle;
+/*
+        // Handle Aliases: Description = only the intent name currently
+        if (typeof(intents.text[textStyle.description])!=='undefined')
+        {
+            const fontStyle = getFontType(intents.text[textStyle.description].value.weight);
+            await figma.loadFontAsync({ family: intents.text[textStyle.description].value.font, style: fontStyle });
+
+            textStyle.fontName = <FontName>({
+                family: intents.text[textStyle.description].value.font,
+                style: fontStyle
+            });
+           textStyle.fontSize = intents.text[textStyle.description].value.size;
+            if (intents.text[textStyle.description].value.lineHeight){
+                styleMap[intents.text[textStyle.description].friendlyName].lineHeight = <LineHeight>({
+                    value: intents.text[textStyle.description].value.lineHeight * 100,
+                    unit: 'PERCENT'
+                });       
+            }
+        }*/
     }
 
     for (const colorIntent of intents.color) {
@@ -294,18 +358,24 @@ export async function loadTheme(themeData) {
             // Add intent name (engineers)
             await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
-            let textLabel = figma.createText();
-            textLabel.characters = colorIntent.name;
-            textLabel.name = "Intent Name";
+            let textLabel = styleFrame.findChild((e) => {return e.name == "Intent Name"});
+            if (!textLabel){
+                textLabel = figma.createText();
+                textLabel.characters = colorIntent.name;
+                textLabel.name = "Intent Name";
+                styleFrame.appendChild(textLabel);
+            }
             textLabel.fills = textColor(colorIntent.value);
-            styleFrame.appendChild(textLabel);
+            
             // Add intent name (designers)
-            textLabel = figma.createText();
-            textLabel.characters = colorIntent.friendlyName;
-            textLabel.name = "Friendly Name";
+            textLabel = styleFrame.findChild((e) => {return e.name == "Friendly Name"});
+            if (!textLabel){
+                textLabel = figma.createText();
+                textLabel.characters = colorIntent.friendlyName;
+                textLabel.name = "Friendly Name";
+                styleFrame.appendChild(textLabel);
+            }
             textLabel.fills = textColor(colorIntent.value);
-            styleFrame.appendChild(textLabel);
-
         }
         styleUsed[colorIntent.name] = 1;
     }
@@ -329,17 +399,24 @@ export async function loadTheme(themeData) {
             styleFrame.itemSpacing = 8;
 
             // Add intent name (engineers)
-            let textLabel = figma.createText();
+            let textLabel = styleFrame.findChild((e) => {return e.name == "Intent Name"});
+            if (!textLabel){
+                textLabel = figma.createText();
+                textLabel.name = "Intent Name";
+                styleFrame.appendChild(textLabel);
+            }
             textLabel.characters = textIntent.name;
-            textLabel.name = "Intent Name";
             textLabel.textStyleId = textStyle.id;
-            styleFrame.appendChild(textLabel);
+
             // Add intent name (designers)
-            textLabel = figma.createText();
+            textLabel = styleFrame.findChild((e) => {return e.name == "Friendly Name"});
+            if (!textLabel){
+                textLabel = figma.createText();
+                textLabel.name = "Friendly Name";
+                styleFrame.appendChild(textLabel);
+            }
             textLabel.characters = textIntent.friendlyName;
-            textLabel.name = "Friendly Name";
             textLabel.textStyleId = textStyle.id;
-            styleFrame.appendChild(textLabel);
         }
 
         styleMap[textIntent.friendlyName].fontName = <FontName>({

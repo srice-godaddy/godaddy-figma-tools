@@ -1,0 +1,7 @@
+{
+  "name": "[GD] Proto Transitions",
+  "id": "986700307520590775",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html"
+}

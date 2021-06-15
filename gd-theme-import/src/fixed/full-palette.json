@@ -1,0 +1,1239 @@
+{
+ "Text/Normal":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.06666667014360428,
+ "g":0.06666667014360428,
+ "b":0.06666667014360428}
+},
+ "Text/Subtle":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.4627451002597809,
+ "g":0.4627451002597809,
+ "b":0.4627451002597809}
+},
+ "Text/Disabled (Tech Gray 300)":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.686274528503418,
+ "g":0.686274528503418,
+ "b":0.686274528503418}
+},
+ "Text/Alert (Reliable Red 400)":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8588235378265381,
+ "g":0.0941176488995552,
+ "b":0.007843137718737125}
+},
+ "Text/Link (Everyday Blue 600)":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.03529411926865578,
+ "g":0.4588235318660736,
+ "b":0.47843137383461}
+},
+ "Text/Emphasis (Motivating Magenta 400)":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.886274516582489,
+ "g":0,
+ "b":0.529411792755127}
+},
+ "Text//Reversed/Normal (Space White)":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":1,
+ "b":1}
+},
+ "Text/Reversed/Link (Everyday Blue 300)":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.3803921639919281,
+ "g":0.929411768913269,
+ "b":0.9176470637321472}
+},
+ "Common/Brand/Cash Black":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.06666667014360428,
+ "g":0.06666667014360428,
+ "b":0.06666667014360428}
+},
+ "Common/Brand/Space White":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":1,
+ "b":1}
+},
+ "Common/Brand/Everyday Blue 400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.10599999874830246,
+ "g":0.859000027179718,
+ "b":0.859000027179718}
+},
+ "Common/Brand/Joyous Yellow 400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9960784316062927,
+ "g":0.8274509906768799,
+ "b":0.09019608050584793}
+},
+ "Common/Brand/Deep Sea 400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.09803921729326248,
+ "g":0.4627451002597809,
+ "b":0.8235294222831726}
+},
+ "Common/Brand/Reliable Red 400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8588235378265381,
+ "g":0.0941176488995552,
+ "b":0.007843137718737125}
+},
+ "Common/Actions/Primary":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.06666667014360428,
+ "g":0.06666667014360428,
+ "b":0.06666667014360428}
+},
+ "Common/Actions/Secondary":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":1,
+ "b":1}
+},
+ "Common/Actions/Critical":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.6823529601097107,
+ "g":0.07450980693101883,
+ "b":0.007843137718737125}
+},
+ "Common/Background/Normal":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":1,
+ "b":1}
+},
+ "Common/Background/Low Contrast":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9607843160629272,
+ "g":0.9686274528503418,
+ "b":0.9725490212440491}
+},
+ "Common/Background/High Contrast":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.06666667014360428,
+ "g":0.06666667014360428,
+ "b":0.06666667014360428}
+},
+ "Common/Borders/Normal":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8313725590705872,
+ "g":0.8588235378265381,
+ "b":0.8784313797950745}
+},
+ "Common/Borders/Low Contrast":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8392156958580017,
+ "g":0.8392156958580017,
+ "b":0.8392156958580017}
+},
+ "Common/Borders/High Contrast":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.16862745583057404,
+ "g":0.16862745583057404,
+ "b":0.16862745583057404}
+},
+ "Common/Overlays/Low Contrast (White)":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":0.20000000298023224,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":1,
+ "b":1}
+},
+ "Common/Overlays/High Contrast (black)":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":0.8500000238418579,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0,
+ "g":0,
+ "b":0}
+},
+ "Full Palette/Everyday Blue/100":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8470588326454163,
+ "g":0.9372549057006836,
+ "b":0.9372549057006836}
+},
+ "Full Palette/Everyday Blue/200":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.6509804129600525,
+ "g":1,
+ "b":0.9725490212440491}
+},
+ "Full Palette/Everyday Blue/300":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.3803921639919281,
+ "g":0.929411768913269,
+ "b":0.9176470637321472}
+},
+ "Full Palette/Everyday Blue/400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.10599999874830246,
+ "g":0.859000027179718,
+ "b":0.859000027179718}
+},
+ "Full Palette/Everyday Blue/500":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0,
+ "g":0.6431372761726379,
+ "b":0.6509804129600525}
+},
+ "Full Palette/Everyday Blue/600":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.03529411926865578,
+ "g":0.4588235318660736,
+ "b":0.47843137383461}
+},
+ "Full Palette/Everyday Blue/700":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0,
+ "g":0.25882354378700256,
+ "b":0.2862745225429535}
+},
+ "Full Palette/Monochrome/Space White":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":1,
+ "b":1}
+},
+ "Full Palette/Monochrome/Cash Black":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.06666667014360428,
+ "g":0.06666667014360428,
+ "b":0.06666667014360428}
+},
+ "Full Palette/Tech Gray/100":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9607843160629272,
+ "g":0.9607843160629272,
+ "b":0.9607843160629272}
+},
+ "Full Palette/Tech Gray/200":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8392156958580017,
+ "g":0.8392156958580017,
+ "b":0.8392156958580017}
+},
+ "Full Palette/Tech Gray/300":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.686274528503418,
+ "g":0.686274528503418,
+ "b":0.686274528503418}
+},
+ "Full Palette/Tech Gray/400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.4627451002597809,
+ "g":0.4627451002597809,
+ "b":0.4627451002597809}
+},
+ "Full Palette/Tech Gray/500":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.3686274588108063,
+ "g":0.3686274588108063,
+ "b":0.3686274588108063}
+},
+ "Full Palette/Tech Gray/600":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.2666666805744171,
+ "g":0.2666666805744171,
+ "b":0.2666666805744171}
+},
+ "Full Palette/Tech Gray/700":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.16862745583057404,
+ "g":0.16862745583057404,
+ "b":0.16862745583057404}
+},
+ "Full Palette/Go Green/100":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8510000109672546,
+ "g":0.9490000009536743,
+ "b":0.8859999775886536}
+},
+ "Full Palette/Go Green/200":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.6235294342041016,
+ "g":1,
+ "b":0.7215686440467834}
+},
+ "Full Palette/Go Green/300":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0,
+ "g":0.8901960849761963,
+ "b":0.33725491166114807}
+},
+ "Full Palette/Go Green/400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0,
+ "g":0.6509804129600525,
+ "b":0.24705882370471954}
+},
+ "Full Palette/Go Green/500":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0,
+ "g":0.47058823704719543,
+ "b":0.18039216101169586}
+},
+ "Full Palette/Go Green/600":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0,
+ "g":0.30980393290519714,
+ "b":0.11764705926179886}
+},
+ "Full Palette/Go Green/700":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0,
+ "g":0.22745098173618317,
+ "b":0.08235294371843338}
+},
+ "Full Palette/Deep Sea/100":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8666666746139526,
+ "g":0.9176470637321472,
+ "b":0.9725490212440491}
+},
+ "Full Palette/Deep Sea/200":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.6629999876022339,
+ "g":0.9290000200271606,
+ "b":1}
+},
+ "Full Palette/Deep Sea/300":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.250980406999588,
+ "g":0.5843137502670288,
+ "b":0.9098039269447327}
+},
+ "Full Palette/Deep Sea/400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.09803921729326248,
+ "g":0.4627451002597809,
+ "b":0.8235294222831726}
+},
+ "Full Palette/Deep Sea/500":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.0784313753247261,
+ "g":0.37254902720451355,
+ "b":0.6627451181411743}
+},
+ "Full Palette/Deep Sea/600":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.062745101749897,
+ "g":0.29019609093666077,
+ "b":0.5215686559677124}
+},
+ "Full Palette/Deep Sea/700":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.0430000014603138,
+ "g":0.20000000298023224,
+ "b":0.32899999618530273}
+},
+ "Full Palette/Proud Purple/100":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9139999747276306,
+ "g":0.8939999938011169,
+ "b":0.9490000009536743}
+},
+ "Full Palette/Proud Purple/200":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8274509906768799,
+ "g":0.7568627595901489,
+ "b":0.9686274528503418}
+},
+ "Full Palette/Proud Purple/300":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.5568627715110779,
+ "g":0.41960784792900085,
+ "b":0.7764706015586853}
+},
+ "Full Palette/Proud Purple/400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.45490196347236633,
+ "g":0.29411765933036804,
+ "b":0.7686274647712708}
+},
+ "Full Palette/Proud Purple/500":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.3803921639919281,
+ "g":0.24313725531101227,
+ "b":0.6392157077789307}
+},
+ "Full Palette/Proud Purple/600":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.27450981736183167,
+ "g":0.16470588743686676,
+ "b":0.4470588266849518}
+},
+ "Full Palette/Proud Purple/700":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.18400000035762787,
+ "g":0.10999999940395355,
+ "b":0.2980000078678131}
+},
+ "Full Palette/Motivating Magenta/100":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9843137264251709,
+ "g":0.8509804010391235,
+ "b":0.929411768913269}
+},
+ "Full Palette/Motivating Magenta/200":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":0.7020000219345093,
+ "b":0.9020000100135803}
+},
+ "Full Palette/Motivating Magenta/300":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":0.125490203499794,
+ "b":0.6470588445663452}
+},
+ "Full Palette/Motivating Magenta/400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.886274516582489,
+ "g":0,
+ "b":0.529411792755127}
+},
+ "Full Palette/Motivating Magenta/500":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.7058823704719543,
+ "g":0,
+ "b":0.42352941632270813}
+},
+ "Full Palette/Motivating Magenta/600":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.545098066329956,
+ "g":0,
+ "b":0.32549020648002625}
+},
+ "Full Palette/Motivating Magenta/700":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.3569999933242798,
+ "g":0,
+ "b":0.23100000619888306}
+},
+ "Full Palette/Reliable Red/100":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9800000190734863,
+ "g":0.8629999756813049,
+ "b":0.8510000109672546}
+},
+ "Full Palette/Reliable Red/200":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":0.7333333492279053,
+ "b":0.7333333492279053}
+},
+ "Full Palette/Reliable Red/300":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9921568632125854,
+ "g":0.20392157137393951,
+ "b":0.11372549086809158}
+},
+ "Full Palette/Reliable Red/400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8588235378265381,
+ "g":0.0941176488995552,
+ "b":0.007843137718737125}
+},
+ "Full Palette/Reliable Red/500":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.6823529601097107,
+ "g":0.07450980693101883,
+ "b":0.007843137718737125}
+},
+ "Full Palette/Reliable Red/600":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.5215686559677124,
+ "g":0.05882352963089943,
+ "b":0.003921568859368563}
+},
+ "Full Palette/Reliable Red/700":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.3764705955982208,
+ "g":0.0313725508749485,
+ "b":0.003921568859368563}
+},
+ "Full Palette/Active Orange/100":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9919999837875366,
+ "g":0.9139999747276306,
+ "b":0.859000027179718}
+},
+ "Full Palette/Active Orange/200":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":0.800000011920929,
+ "b":0.6629999876022339}
+},
+ "Full Palette/Active Orange/300":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9529411792755127,
+ "g":0.5607843399047852,
+ "b":0.2823529541492462}
+},
+ "Full Palette/Active Orange/400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9372549057006836,
+ "g":0.42352941632270813,
+ "b":0.05882352963089943}
+},
+ "Full Palette/Active Orange/500":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.7689999938011169,
+ "g":0.3449999988079071,
+ "b":0.04699999839067459}
+},
+ "Full Palette/Active Orange/600":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.615686297416687,
+ "g":0.27843138575553894,
+ "b":0.03921568766236305}
+},
+ "Full Palette/Active Orange/700":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.4269999861717224,
+ "g":0.19599999487400055,
+ "b":0.03500000014901161}
+},
+ "Full Palette/Joyous Yellow/100":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":0.9800000190734863,
+ "b":0.8899999856948853}
+},
+ "Full Palette/Joyous Yellow/200":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":0.9333333373069763,
+ "b":0.6627451181411743}
+},
+ "Full Palette/Joyous Yellow/300":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9960784316062927,
+ "g":0.8627451062202454,
+ "b":0.2705882489681244}
+},
+ "Full Palette/Joyous Yellow/400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9960784316062927,
+ "g":0.8274509906768799,
+ "b":0.09019608050584793}
+},
+ "Full Palette/Joyous Yellow/500":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9179999828338623,
+ "g":0.7020000219345093,
+ "b":0.012000000104308128}
+},
+ "Full Palette/Joyous Yellow/600":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8196078538894653,
+ "g":0.5843137502670288,
+ "b":0}
+},
+ "Full Palette/Joyous Yellow/700":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.6666666865348816,
+ "g":0.4274509847164154,
+ "b":0}
+},
+ "Full Palette/Intentional Brown/100":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":1,
+ "g":0.9449999928474426,
+ "b":0.8820000290870667}
+},
+ "Full Palette/Intentional Brown/200":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9959999918937683,
+ "g":0.8510000109672546,
+ "b":0.7059999704360962}
+},
+ "Full Palette/Intentional Brown/300":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9843137264251709,
+ "g":0.7137255072593689,
+ "b":0.5176470875740051}
+},
+ "Full Palette/Intentional Brown/400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.7409999966621399,
+ "g":0.5059999823570251,
+ "b":0.3140000104904175}
+},
+ "Full Palette/Intentional Brown/500":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.6269999742507935,
+ "g":0.3490000069141388,
+ "b":0.19599999487400055}
+},
+ "Full Palette/Intentional Brown/600":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.5098039507865906,
+ "g":0.23137255012989044,
+ "b":0.14509804546833038}
+},
+ "Full Palette/Intentional Brown/700":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.3100000023841858,
+ "g":0.15299999713897705,
+ "b":0.10999999940395355}
+},
+ "Full Palette/UI Chrome/100":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9607843160629272,
+ "g":0.9686274528503418,
+ "b":0.9725490212440491}
+},
+ "Full Palette/UI Chrome/200":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.95686274766922,
+ "g":0.9725490212440491,
+ "b":0.9882352948188782}
+},
+ "Full Palette/UI Chrome/300":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.9098039269447327,
+ "g":0.9176470637321472,
+ "b":0.9215686321258545}
+},
+ "Full Palette/UI Chrome/400":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8313725590705872,
+ "g":0.8588235378265381,
+ "b":0.8784313797950745}
+},
+ "Full Palette/UI Chrome/500":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.8117647171020508,
+ "g":0.8313725590705872,
+ "b":0.8392156958580017}
+},
+ "Full Palette/UI Chrome/600":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.729411780834198,
+ "g":0.7529411911964417,
+ "b":0.7647058963775635}
+},
+ "Full Palette/UI Chrome/700":{
+ "type":"SOLID",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "color":{
+ "r":0.6666666865348816,
+ "g":0.7176470756530762,
+ "b":0.7607843279838562}
+},
+ "Full Palette/Gradients/Surfaces/Everyday Blue-Proud Purple":{
+ "type":"GRADIENT_LINEAR",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "gradientStops":[{
+ "color":{
+ "r":0,
+ "g":0.6431372761726379,
+ "b":0.6509804129600525,
+ "a":1}
+ ,
+ "position":0}
+ ,
+ {
+ "color":{
+ "r":0.45500001311302185,
+ "g":0.2939999997615814,
+ "b":0.7689999938011169,
+ "a":1}
+ ,
+ "position":1}
+ ],
+ "gradientTransform":[[1,
+ -1.7841234267734762e-8,
+ 1.3023242928511536e-8],
+ [-2.0025348046459612e-9,
+ 0.2872255742549896,
+ 0.3569374680519104]]}
+ ,
+ "Full Palette/Gradients/Surfaces/Deep Sea-Go Green":{
+ "type":"GRADIENT_LINEAR",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "gradientStops":[{
+ "color":{
+ "r":0.03529411926865578,
+ "g":0.4588235318660736,
+ "b":0.47843137383461,
+ "a":1}
+ ,
+ "position":0}
+ ,
+ {
+ "color":{
+ "r":0.09799999743700027,
+ "g":0.46299999952316284,
+ "b":0.8240000009536743,
+ "a":1}
+ ,
+ "position":1}
+ ],
+ "gradientTransform":[[-1.1047618389129639,
+ 0.00000193767664313782,
+ 1.1047608852386475],
+ [4.1793139615720065e-8,
+ -0.1216176450252533,
+ 0.5608088374137878]]}
+ ,
+ "Full Palette/Gradients/Surfaces/Active Orange-Everyday Blue":{
+ "type":"GRADIENT_LINEAR",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "gradientStops":[{
+ "color":{
+ "r":0.9179999828338623,
+ "g":0.7020000219345093,
+ "b":0.012000000104308128,
+ "a":1}
+ ,
+ "position":0}
+ ,
+ {
+ "color":{
+ "r":1,
+ "g":0.7329999804496765,
+ "b":0.7329999804496765,
+ "a":1}
+ ,
+ "position":0.4904458820819855}
+ ,
+ {
+ "color":{
+ "r":0.10599999874830246,
+ "g":0.859000027179718,
+ "b":0.859000027179718,
+ "a":1}
+ ,
+ "position":1}
+ ],
+ "gradientTransform":[[0.7160493731498718,
+ -1.4884677490556442e-8,
+ 0.1388888955116272],
+ [1.6599450702869945e-9,
+ 0.07882625609636307,
+ 0.46058687567710876]]}
+ ,
+ "Full Palette/Gradients/Illumination/Active Orange-Everyday Blue":{
+ "type":"GRADIENT_LINEAR",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "gradientStops":[{
+ "color":{
+ "r":0.9960784316062927,
+ "g":0.8274509906768799,
+ "b":0.09019608050584793,
+ "a":1}
+ ,
+ "position":0}
+ ,
+ {
+ "color":{
+ "r":0.9803921580314636,
+ "g":0.8627451062202454,
+ "b":0.8509804010391235,
+ "a":1}
+ ,
+ "position":0.4904458820819855}
+ ,
+ {
+ "color":{
+ "r":0.3803921639919281,
+ "g":0.929411768913269,
+ "b":0.9176470637321472,
+ "a":1}
+ ,
+ "position":1}
+ ],
+ "gradientTransform":[[0.8738229870796204,
+ 1.165267438096862e-8,
+ 0.05649716779589653],
+ [-1.205850352903326e-8,
+ 0.09619475156068802,
+ 0.4519026279449463]]}
+ ,
+ "Full Palette/Gradients/Illumination/Deep Sea-Everyday Blue":{
+ "type":"GRADIENT_LINEAR",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "gradientStops":[{
+ "color":{
+ "r":0.250980406999588,
+ "g":0.5843137502670288,
+ "b":0.9098039269447327,
+ "a":1}
+ ,
+ "position":0}
+ ,
+ {
+ "color":{
+ "r":0.3803921639919281,
+ "g":0.929411768913269,
+ "b":0.9176470637321472,
+ "a":1}
+ ,
+ "position":1}
+ ],
+ "gradientTransform":[[1,
+ -2.7235119048896195e-8,
+ 2.1504202862843158e-8],
+ [3.725290076417309e-9,
+ 0.11008494347333908,
+ 0.44495752453804016]]}
+ ,
+ "Full Palette/Gradients/Illumination/Everyday Blue-Proud Purple":{
+ "type":"GRADIENT_LINEAR",
+ "visible":true,
+ "opacity":1,
+ "blendMode":"NORMAL",
+ "gradientStops":[{
+ "color":{
+ "r":0.10599999874830246,
+ "g":0.859000027179718,
+ "b":0.859000027179718,
+ "a":1}
+ ,
+ "position":0}
+ ,
+ {
+ "color":{
+ "r":0.5568627715110779,
+ "g":0.41960784792900085,
+ "b":0.7764706015586853,
+ "a":1}
+ ,
+ "position":1}
+ ],
+ "gradientTransform":[[1,
+ -4.750472726300359e-8,
+ 2.3752363631501794e-8],
+ [9.087671060115099e-9,
+ 0.2197265625,
+ 0.39013671875]]}
+}

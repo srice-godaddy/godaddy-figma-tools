@@ -1,40 +1,32 @@
-Below are the steps to get your plugin running. You can also find instructions at:
+# GoDaddy Theme Importer
 
-  https://www.figma.com/plugin-docs/setup/
+This Figma plugin will allow you to import themes from the GoDaddy theme repository.
 
-This plugin template uses Typescript and NPM, two standard tools in creating JavaScript applications.
+## Building this plugin
 
-First, download Node.js which comes with NPM. This will allow you to install TypeScript and other
-libraries. You can find the download link here:
+Run the following commands:
 
-  https://nodejs.org/en/download/
+```(bash)
+npm install
+npx webpack
+```
 
-Next, install TypeScript using the command:
+## Prerequisites for running this plugin (probably temporary)
 
-  npm install -g typescript
+You'll need to install a cors proxy because figma runs plugins in an iframe, and we're not letting that traffic through. 
+1. Go to a fresh directory somewhere (maybe your repos directory?
+2. `git clone git@github.com:Rob--W/cors-anywhere.git`
+3. `cd cors-anywhere`
+4. `npm install`
+5. `node server.js`
 
-Finally, in the directory of your plugin, get the latest type definitions for the plugin API by running:
+Log into the VPN, and run the plugin (See below)
+Be sure to kill the proxy (`ctrl+c`) when you're done running the plugin.
 
-  npm install --save-dev @figma/plugin-typings
+## Running the plugin in Figma:
 
-If you are familiar with JavaScript, TypeScript will look very familiar. In fact, valid JavaScript code
-is already valid Typescript code.
-
-TypeScript adds type annotations to variables. This allows code editors such as Visual Studio Code
-to provide information about the Figma API while you are writing code, as well as help catch bugs
-you previously didn't notice.
-
-For more information, visit https://www.typescriptlang.org/
-
-Using TypeScript requires a compiler to convert TypeScript (code.ts) into JavaScript (code.js)
-for the browser to run.
-
-We recommend writing TypeScript code using Visual Studio code:
-
-1. Download Visual Studio Code if you haven't already: https://code.visualstudio.com/.
-2. Open this directory in Visual Studio Code.
-3. Compile TypeScript to JavaScript: Run the "Terminal > Run Build Task..." menu item,
-    then select "tsc: watch - tsconfig.json". You will have to do this again every time
-    you reopen Visual Studio Code.
-
-That's it! Visual Studio Code will regenerate the JavaScript file every time you save.
+1. In Figma, Select Plugins > Development > New Plugin...
+2. Select "Link Existing Plugin"
+3. Choose the manifest.json file at the root of this project.
+4. Build if you haven't already
+5. Run the plugin from the PLugins > Development menu.
