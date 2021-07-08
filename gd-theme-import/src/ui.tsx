@@ -7,6 +7,102 @@ onmessage = (event) => {
     currentThemeId = event.data.pluginMessage;
 };
 
+const tempTheme = `{
+    "root": {
+      "values": {
+        "intents.ux.action.borderRadius": {
+          "type": "static",
+          "value": "6px"
+        },
+        "intents.ux.textAction.fontSize": {
+          "type": "static",
+          "value": "1rem"
+        },
+        "intents.ux.textAction.fontWeight": {
+          "type": "static",
+          "value": "500"
+        },
+        "intents.ux.textAction.lineHeight": {
+          "type": "static",
+          "value": "1"
+        },
+        "intents.ux.textInput.lineHeight": {
+          "type": "static",
+          "value": "1"
+        },
+        "intents.ux.actionSecondary.borderColor": {
+          "type": "static",
+          "value": "#8995A9"
+        },
+        "intents.ux.actionSecondaryChosen.backgroundColor": {
+          "type": "static",
+          "value": "#09757A"
+        },
+        "intents.ux.actionSecondaryChosen.borderColor": {
+          "type": "static",
+          "value": "#09757A"
+        },
+        "intents.ux.actionSecondaryChosen.foregroundColor": {
+          "type": "static",
+          "value": "#fff"
+        },
+        "intents.ux.actionSecondaryFocused.borderColor": {
+          "type": "static",
+          "value": "#09757A"
+        },
+        "intents.ux.actionSecondaryFocused.foregroundColor": {
+          "type": "static",
+          "value": "#09757A"
+        },
+        "intents.ux.actionSecondaryFocused.outlineColor": {
+          "type": "static",
+          "value": "#09757A"
+        },
+        "intents.ux.actionSecondaryHovered.backgroundColor": {
+          "type": "static",
+          "value": "#fff"
+        },
+        "intents.ux.actionSecondaryHovered.borderColor": {
+          "type": "static",
+          "value": "#09757A"
+        },
+        "intents.ux.actionSecondaryHovered.foregroundColor": {
+          "type": "static",
+          "value": "#09757A"
+        },
+        "intents.ux.control.borderRadius": {
+          "type": "static",
+          "value": "6px"
+        },
+        "intents.ux.textInput.fontSize": {
+          "type": "static",
+          "value": "1rem"
+        },
+        "intents.ux.textLabel.fontSize": {
+          "type": "static",
+          "value": "0.875rem"
+        },
+        "intents.ux.textLabel.fontWeight": {
+          "type": "static",
+          "value": "500"
+        },
+        "intents.uxFormElement.label.foregroundColor": {
+          "type": "static",
+          "value": "#767676"
+        },
+        "intents.uxFormElement.checkboxChosen.backgroundColor": {
+          "type": "static",
+          "value": "#1BDBDB"
+        },
+        "intents.uxFormElement.checkboxChosen.foregroundColor": {
+          "type": "static",
+          "value": "#111"
+        }
+      }
+    }
+  }`;
+
+
 class App extends React.Component {
     themeSelect: HTMLSelectElement
 
@@ -33,12 +129,11 @@ class App extends React.Component {
         fetch('http://localhost:8080/https://theme-api.uxp.godaddy.com/v1/themes?themeId=' + themeId) // TODO: Remove the need for this cors proxy!
             .then(response => response.json())
             .then(themeData => {
+                /*themeData = { themes:
+                    [{data: JSON.parse(tempTheme)}]
+                };*/
                 parent.postMessage({ pluginMessage: { type: 'create-styles', themeData } }, '*');
             });
-    }
-
-    onClearStyles = () => {
-        parent.postMessage({ pluginMessage: { type: 'delete-all-styles' } }, '*');
     }
 
     componentDidMount() {
@@ -93,8 +188,6 @@ class App extends React.Component {
                     }
                 </select>
                 <div className='button-container'>
-                    <a href='https://themes.pts.godaddy.com/' target='_blank' className='link-button secondary' style={{marginLeft: '0'}}>Manage Themes</a>
-                    <button id="clear" onClick={this.onClearStyles} className='secondary'>Clear Theme Styles</button>
                     <button id="create" onClick={this.onCreate} className='primary'>Select Theme</button>
                 </div>
 
