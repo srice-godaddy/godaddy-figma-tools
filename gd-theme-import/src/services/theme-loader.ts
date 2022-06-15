@@ -27,7 +27,7 @@ function hexToRgb(hex) {
 
 function rgbaToFigma(rgba) {
   
-    var result = /^rgba\(([0-9]{1,3}),([0-9]{1,3}),([0-9]{1,3}),([0-9\.]*)\)$/i.exec(rgba);
+    var result = /^rgba\(([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9\.]*)\)$/i.exec(rgba);
     return result ? {
       r: parseInt(result[1])/255,
       g: parseInt(result[2])/255,
@@ -367,6 +367,7 @@ export async function loadTheme(themeData) {
         let textLabel = styleFrame.findChild((e) => {return e.name == "Intent Name"});
         if (!textLabel){
             textLabel = figma.createText();
+            textLabel.fontName = { family: "Roboto", style: "Regular" };
             textLabel.characters = colorIntent.name;
             textLabel.name = "Intent Name";
             styleFrame.appendChild(textLabel);
@@ -377,6 +378,7 @@ export async function loadTheme(themeData) {
         textLabel = styleFrame.findChild((e) => {return e.name == "Friendly Name"});
         if (!textLabel){
             textLabel = figma.createText();
+            textLabel.fontName = { family: "Roboto", style: "Regular" };
             textLabel.characters = colorIntent.friendlyName;
             textLabel.name = "Friendly Name";
             styleFrame.appendChild(textLabel);
@@ -443,9 +445,9 @@ export async function loadTheme(themeData) {
         
     }
 
-    /*
+    // Clean up styles. Remove non-intents styles
     for (const paintStyle of paintStyles) {
-        if (styleUsed[paintStyle.name]) {
+        if (paintStyle.name.indexOf("Intents") < 0 || styleUsed[paintStyle.name]) {
             continue;
         }
 
@@ -453,11 +455,10 @@ export async function loadTheme(themeData) {
     }
 
     for (const textStyle of textStyles) {
-        if (styleUsed[textStyle.name]) {
+        if (textStyle.name.indexOf("Intents") < 0 || styleUsed[textStyle.name]) {
             continue;
         }
 
         textStyle.remove();
     }
-    */
 }
