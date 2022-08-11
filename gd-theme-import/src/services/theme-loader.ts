@@ -341,37 +341,13 @@ export async function loadTheme(themeData) {
     const textIntentsFrame = intentsFrame.findChildren((e)=> {return e.name == "Text Intents" })[0];
     const colorIntentsFrame = intentsFrame.findChildren((e)=> {return e.name == "Color Intents" })[0];
 
+    // Load styles
     for (const paintStyle of paintStyles) {
         styleMap[paintStyle.name] = paintStyle;
-        
-        // Handle Aliases: Description = only the intent name currently
-        /*if (typeof(intents.color[paintStyle.description])!=='undefined')
-        {
-            paintStyle.paints = [intents.color[paintStyle.description].colorIntent.value];
-        }*/
     }
 
     for (const textStyle of textStyles) {
         styleMap[textStyle.name] = textStyle;
-/*
-        // Handle Aliases: Description = only the intent name currently
-        if (typeof(intents.text[textStyle.description])!=='undefined')
-        {
-            const fontStyle = getFontType(intents.text[textStyle.description].value.weight);
-            await figma.loadFontAsync({ family: intents.text[textStyle.description].value.font, style: fontStyle });
-
-            textStyle.fontName = <FontName>({
-                family: intents.text[textStyle.description].value.font,
-                style: fontStyle
-            });
-           textStyle.fontSize = intents.text[textStyle.description].value.size;
-            if (intents.text[textStyle.description].value.lineHeight){
-                styleMap[intents.text[textStyle.description].friendlyName].lineHeight = <LineHeight>({
-                    value: intents.text[textStyle.description].value.lineHeight * 100,
-                    unit: 'PERCENT'
-                });       
-            }
-        }*/
     }
 
     for (const colorIntent of intents.color) {
@@ -413,13 +389,16 @@ export async function loadTheme(themeData) {
             //If we've got a new intent:
             const colorStyle = figma.createPaintStyle();
             colorStyle.name = colorIntent.friendlyName;
-            colorStyle.description = colorIntent.name;
             colorStyle.paints = [colorIntent.value]; // Currently only supports a single value here, so no multi-color intents yet
             styleMap[colorIntent.friendlyName] = colorStyle;
             //styleFrame.fillStyleId = colorStyle.id;
             colorFrame.fillStyleId = colorStyle.id;
         }
         
+        // Create the description
+        styleMap[colorIntent.friendlyName].description = 
+            `${colorIntent.name}
+            {{"intentName":"${colorIntent.name}"}}`;
 
         // Add intent name (engineers)
         await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
@@ -456,7 +435,6 @@ export async function loadTheme(themeData) {
             textFrame.appendChild(textLabel);
         }
         textLabel.fills = textColor(colorIntent.value);
-
         styleUsed[colorIntent.friendlyName] = 1;
     }
 
@@ -478,7 +456,6 @@ export async function loadTheme(themeData) {
             if (!styleMap[textIntent.friendlyName]) {
                 const textStyle = figma.createTextStyle();
                 textStyle.name = textIntent.friendlyName;
-                textStyle.description = textIntent.name;
     
                 styleMap[textIntent.friendlyName] = textStyle;
                 styleMap[textIntent.friendlyName].fontName = <FontName>({
@@ -494,6 +471,11 @@ export async function loadTheme(themeData) {
                 }
                 //styleMap[textStyle.name].id = textStyle.id;
             }
+
+            styleMap[textIntent.friendlyName].description = 
+            `${textIntent.name}
+            {{"intentName":"${textIntent.name}"}}`;
+
             let framesArray = textIntent.friendlyName.split('/');
             framesArray.shift();
             const styleFrame = createFramesForThemes(framesArray,textIntentsFrame);
@@ -523,7 +505,6 @@ export async function loadTheme(themeData) {
         } catch (e) {
             console.log(e);
         }
-        
     }
 
     // Clean up styles. Remove non-intents styles

@@ -1,11 +1,20 @@
 import { loadTheme } from './services/theme-loader';
+import { aliasStyles } from './services/alias-styles';
 
-figma.showUI(__html__, {
-  width: 464,
-  height: 276,
-});
+switch(figma.command){
+  case "importTheme":
+    figma.showUI(__html__, {
+      width: 464,
+      height: 276,
+    });
+    figma.ui.postMessage(figma.root.getPluginData('theme'));
+    break;
+  default:
+    case "aliasStyles":
+      aliasStyles();
+    break;
+}
 
-figma.ui.postMessage(figma.root.getPluginData('theme'));
 
 figma.ui.onmessage = async msg => {
   if (msg.type === 'create-styles') {
