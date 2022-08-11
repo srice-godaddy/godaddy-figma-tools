@@ -126,7 +126,7 @@ class App extends React.Component {
         });
 
         const themeId = this.themeSelect.value;
-        fetch('http://localhost:8080/https://theme-api.uxp.godaddy.com/v1/themes?themeId=' + themeId) // TODO: Remove the need for this cors proxy!
+        fetch('https://theme-api.uxp.godaddy.com/v1/themes?themeId=' + themeId) // TODO: Remove the need for this cors proxy!
             .then(response => response.json())
             .then(themeData => {
                 /*themeData = { themes:
@@ -139,7 +139,7 @@ class App extends React.Component {
     componentDidMount() {
         const self = this;
 
-        fetch('http://localhost:8080/https://theme-api.uxp.godaddy.com/v1/themes') // TODO: Remove the need for this cors proxy!
+        fetch('https://theme-api.uxp.godaddy.com/v1/themes') // TODO: Remove the need for this cors proxy!
             .then(response => response.json())
             .then(themes => {
                 self.setState({
@@ -191,8 +191,7 @@ class App extends React.Component {
                     <button id="create" onClick={this.onCreate} className='primary'>Select Theme</button>
                 </div>
 
-                <p style={{ marginTop: '25px', fontSize: '12px'}}><b>Note:</b> What to do if you don't see your theme here, or if a color is wrong? Just hit the "Manage Themes" link and you'll be able to correct it. Logging in with Okta required.</p>
-            </div>;
+              </div>;
         }
 
         return <div className='main'>

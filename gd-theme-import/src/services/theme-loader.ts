@@ -1,12 +1,13 @@
 function getFontType(weight) {
     const weights = {
+        100: 'Thin',
         300: 'Light',
         400: 'Regular',
         500: 'Medium',
         600: 'Semibold',
         700: 'Bold'
-    };
-
+        
+    };    
     return weights[weight] ? weights[weight] : 'Regular';
 }
 
@@ -43,7 +44,7 @@ function textColor (color){
     } else {
         myColor.opacity = 1;
     }
-    return (((myColor.r*255*299)+(myColor.g*255*587)+(myColor.b*255*114))/1000 >= 128 || myColor.opacity < 0.5)? [<SolidPaint>({
+    /*return (((myColor.r*255*299)+(myColor.g*255*587)+(myColor.b*255*114))/1000 >= 128 || myColor.opacity < 0.5)? [<SolidPaint>({
         type: 'SOLID',
         color: <RGB>({
             r: 0,
@@ -57,14 +58,40 @@ function textColor (color){
             g: 1,
             b: 1
         }) 
+    })];*/
+    return [<SolidPaint>({
+        type: 'SOLID',
+        color: <RGB>({
+            r: 0,
+            g: 0,
+            b: 0
+        }) 
     })];
 }
 
-// Create our friendly name
-function friendlyName(name){
-    function upperCase ( p1 ){ // This might need to be (match, p1, offset, string) or some variant of that.
-        return p1.toUpperCase();
-    }
+
+function upperCase ( p1 ){ // This might need to be (match, p1, offset, string) or some variant of that.
+    return p1.toUpperCase();
+}
+
+function friendlyName(name){   
+    // Create our friendly name
+
+    return name.replace(/intents\.ux\./,'Global Intents/')
+    .replace(/intents/,'Local Intents')
+    .replace(/\./g, "/") // Dots to slashes
+    .replace(/font.*$|lineHeight$/,'') // Type styles
+    .replace(/([A-Z])(?!olor)/g, ' $1') // Add a space before capital letters (unless Color)
+    .replace(/\/([a-z]*) /, '/$1/') // convert namespace to a directory for local intents
+    .replace(/\/([a-tv-z])|^([a-tv-z])|\/(u)(?!x)|^(u)(?!x)/g, upperCase) // Convert from pascalCase to Title Case
+    .replace(/ (Chosen|Focused|Hovered|Pressed|Dragged|Primary|Secondary|Tertiary|High Contrast|Highlight|Completed|Low Contrast|Info|Internal|Neutral|Passive|Success|Warning|Critical|Premium)/g, '/$1') // Add a / before state modifiers
+    .replace(/Action\/Control/, 'ActionControl') //Put actionControl back together because it's its own thing.
+    .replace(/Text\/(Action|Caption|Heading|Input|Label|Paragraph|Title)/g, '$1') // Put text styles in a directory
+    .replace(/^ /,'');
+}
+
+function oldFriendlyName(name){
+    //OLD version - for upgrading
     return name.replace(/intents\.ux\./,'Intents_ux/')
     .replace(/intents/,'Intents (component)')
     .replace(/\./g, "/") // Dots to slashes
@@ -77,6 +104,7 @@ function friendlyName(name){
     .replace(/Text (Action|Caption|Heading|Input|Label|Paragraph|Title)/g, '$1') // Put text styles in a directory
     .replace(/^ /,'');
 }
+
 
 function transformThemeJson (themeData){
     const intents = {
@@ -138,8 +166,8 @@ function transformThemeJson (themeData){
                     name: thisStyle.name,
                     friendlyName: friendlyName(thisStyle.name),
                     value: { // Set defaults in case they're not set elsewhere
-                        size: 16,
-                        weight: 400,
+                        size: 16, //We can't default this either... need to set to zero and then scan through and assign to ux.text's value
+                        weight: 400, //We can't default this. Need to set to zero and then scan through and assign to ux.text's value.
                         lineHeight: null,
                         font: 'GD Sherpa',
                     },
@@ -179,6 +207,8 @@ function transformThemeJson (themeData){
                 default:
                     break;
             }
+        } else {
+            console.log("Unknown Intent: "+thisStyle.name);
         }
     }
     // Process through font sizes
@@ -226,13 +256,13 @@ function transformThemeJson (themeData){
 
 function createFramesForThemes(themeArray, parent){
     let newFrame = parent.findChildren((e)=> {return e.name == themeArray[0] })[0]
-    if (parent.findChildren((e)=> {return e.name == themeArray[0] }).length == 0){
+    if (!newFrame){
         newFrame = figma.createFrame();
         newFrame.name = themeArray[0];
-        newFrame.paddingLeft = 8;
-        newFrame.paddingRight = 8;
-        newFrame.paddingTop = 8;
-        newFrame.paddingBottom = 8;
+        newFrame.paddingLeft = 64;
+        newFrame.paddingRight = 0;
+        newFrame.paddingTop = 0;
+        newFrame.paddingBottom =0;
         newFrame.primaryAxisSizingMode = "AUTO";
         newFrame.counterAxisSizingMode = "AUTO";
         newFrame.counterAxisAlignItems = "MIN";
@@ -290,6 +320,9 @@ export async function loadTheme(themeData) {
         newFrame.layoutMode = "HORIZONTAL";
         newFrame.primaryAxisSizingMode = "AUTO"; 
         newFrame.counterAxisSizingMode = "AUTO";
+        newFrame.paddingTop = 64;
+        newFrame.paddingRight = 64;
+        newFrame.paddingBottom = 64;
         intentsFrame.appendChild(newFrame);
     }
     if (intentsFrame.findChildren((e)=> {return e.name == "Text Intents" }).length == 0){
@@ -299,6 +332,9 @@ export async function loadTheme(themeData) {
         newFrame.layoutMode = "HORIZONTAL";
         newFrame.primaryAxisSizingMode = "AUTO"; 
         newFrame.counterAxisSizingMode = "AUTO"; 
+        newFrame.paddingTop = 64;
+        newFrame.paddingRight = 64;
+        newFrame.paddingBottom = 64;
         intentsFrame.appendChild(newFrame);
     }
 
@@ -344,13 +380,35 @@ export async function loadTheme(themeData) {
         framesArray.shift();
         const styleFrame = createFramesForThemes(framesArray,colorIntentsFrame);
         styleFrame.counterAxisAlignItems = "CENTER";
-        styleFrame.primaryAxisSizingMode= "FIXED";
-        styleFrame.layoutMode = "VERTICAL";
+        styleFrame.primaryAxisSizingMode = "AUTO";
+        styleFrame.counterAxisSizingMode = "AUTO";
+        styleFrame.layoutMode = "HORIZONTAL";
         styleFrame.itemSpacing = 8;
 
+        let colorFrame = styleFrame.findChild((e) => {return e.name == "Intent Style"});
+        if (!colorFrame) {
+            colorFrame = figma.createFrame();
+            colorFrame.name="Intent Style";
+            colorFrame.resize(64,64);
+            colorFrame.cornerRadius = 32;
+            styleFrame.appendChild(colorFrame);
+        }
+
+        
+
+        // Handle Name Upgrades
+
+        if (styleMap[oldFriendlyName(colorIntent.name)]){
+            styleMap[oldFriendlyName(colorIntent.name)].name = colorIntent.friendlyName;
+            styleMap[colorIntent.friendlyName] = styleMap[oldFriendlyName(colorIntent.name)];
+        }
+
         if (styleMap[colorIntent.friendlyName]){
-            //If we've got an existing intent:
+            //If we've got an existing intent, let's just make sure it maps
             styleMap[colorIntent.friendlyName].paints = [colorIntent.value];
+            
+            colorFrame.fillStyleId = styleMap[colorIntent.friendlyName].id;
+
         } else {
             //If we've got a new intent:
             const colorStyle = figma.createPaintStyle();
@@ -358,30 +416,44 @@ export async function loadTheme(themeData) {
             colorStyle.description = colorIntent.name;
             colorStyle.paints = [colorIntent.value]; // Currently only supports a single value here, so no multi-color intents yet
             styleMap[colorIntent.friendlyName] = colorStyle;
-            styleFrame.fillStyleId = colorStyle.id;
+            //styleFrame.fillStyleId = colorStyle.id;
+            colorFrame.fillStyleId = colorStyle.id;
         }
+        
 
         // Add intent name (engineers)
         await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
         
-        let textLabel = styleFrame.findChild((e) => {return e.name == "Intent Name"});
+        let textFrame = styleFrame.findChild((e) => {return e.name == "Intent Names"});
+        if(!textFrame){
+            textFrame = figma.createFrame();
+            textFrame.counterAxisAlignItems = "MIN";
+            textFrame.primaryAxisSizingMode= "AUTO";
+            textFrame.counterAxisSizingMode= "AUTO";
+            textFrame.layoutMode = "VERTICAL";
+            textFrame.itemSpacing = 8;
+            textFrame.name = "Intent Names";
+            styleFrame.appendChild(textFrame);
+        }
+
+        let textLabel = textFrame.findChild((e) => {return e.name == "Intent Name"});
         if (!textLabel){
             textLabel = figma.createText();
             textLabel.fontName = { family: "Roboto", style: "Regular" };
-            textLabel.characters = colorIntent.name;
             textLabel.name = "Intent Name";
-            styleFrame.appendChild(textLabel);
+            textFrame.appendChild(textLabel);
         }
+        textLabel.characters = colorIntent.name;
         textLabel.fills = textColor(colorIntent.value);
         
         // Add intent name (designers)
-        textLabel = styleFrame.findChild((e) => {return e.name == "Friendly Name"});
+        textLabel = textFrame.findChild((e) => {return e.name == "Friendly Name"});
         if (!textLabel){
             textLabel = figma.createText();
             textLabel.fontName = { family: "Roboto", style: "Regular" };
             textLabel.characters = colorIntent.friendlyName;
             textLabel.name = "Friendly Name";
-            styleFrame.appendChild(textLabel);
+            textFrame.appendChild(textLabel);
         }
         textLabel.fills = textColor(colorIntent.value);
 
@@ -395,49 +467,58 @@ export async function loadTheme(themeData) {
         const fontStyle = getFontType(textIntent.value.weight);
         try {
             await figma.loadFontAsync({ family: textIntent.value.font, style: fontStyle });
+            await figma.loadFontAsync({ family: "Inter", style: "Regular" }); // Load Figma's default font as a backup
+            
+            //Upgrade layer
+            if (styleMap[oldFriendlyName(textIntent.name)]){
+                styleMap[oldFriendlyName(textIntent.name)].name = textIntent.friendlyName;
+                styleMap[textIntent.friendlyName] = styleMap[oldFriendlyName(textIntent.name)];
+            }
+            
             if (!styleMap[textIntent.friendlyName]) {
                 const textStyle = figma.createTextStyle();
                 textStyle.name = textIntent.friendlyName;
                 textStyle.description = textIntent.name;
     
-                styleMap[textStyle.name] = textStyle;
-                let framesArray = textIntent.friendlyName.split('/');
-                framesArray.shift();
-                const styleFrame = createFramesForThemes(framesArray,textIntentsFrame);
-                styleFrame.itemSpacing = 8;
-    
-                // Add intent name (engineers)
-                let textLabel = styleFrame.findChild((e) => {return e.name == "Intent Name"});
-                if (!textLabel){
-                    textLabel = figma.createText();
-                    textLabel.name = "Intent Name";
-                    styleFrame.appendChild(textLabel);
+                styleMap[textIntent.friendlyName] = textStyle;
+                styleMap[textIntent.friendlyName].fontName = <FontName>({
+                    family: textIntent.value.font,
+                    style: fontStyle
+                });
+                styleMap[textIntent.friendlyName].fontSize = textIntent.value.size;
+                if (textIntent.value.lineHeight){
+                    styleMap[textIntent.friendlyName].lineHeight = <LineHeight>({
+                        value: textIntent.value.lineHeight * 100,
+                        unit: 'PERCENT'
+                    });       
                 }
-                textLabel.characters = textIntent.name;
-                textLabel.textStyleId = textStyle.id;
-    
-                // Add intent name (designers)
-                textLabel = styleFrame.findChild((e) => {return e.name == "Friendly Name"});
-                if (!textLabel){
-                    textLabel = figma.createText();
-                    textLabel.name = "Friendly Name";
-                    styleFrame.appendChild(textLabel);
-                }
-                textLabel.characters = textIntent.friendlyName;
-                textLabel.textStyleId = textStyle.id;
+                //styleMap[textStyle.name].id = textStyle.id;
             }
-    
-            styleMap[textIntent.friendlyName].fontName = <FontName>({
-                family: textIntent.value.font,
-                style: fontStyle
-            });
-            styleMap[textIntent.friendlyName].fontSize = textIntent.value.size;
-            if (textIntent.value.lineHeight){
-                styleMap[textIntent.friendlyName].lineHeight = <LineHeight>({
-                    value: textIntent.value.lineHeight * 100,
-                    unit: 'PERCENT'
-                });       
+            let framesArray = textIntent.friendlyName.split('/');
+            framesArray.shift();
+            const styleFrame = createFramesForThemes(framesArray,textIntentsFrame);
+            styleFrame.itemSpacing = 8;
+
+            // Add intent name (engineers)
+            let textLabel = styleFrame.findChild((e) => {return e.name == "Intent Name"});
+            if (!textLabel){
+                textLabel = figma.createText();
+                textLabel.name = "Intent Name";
+                styleFrame.appendChild(textLabel);
             }
+            textLabel.characters = textIntent.name;
+            textLabel.textStyleId = styleMap[textIntent.friendlyName].id;
+            
+            // Add intent name (designers)
+            textLabel = styleFrame.findChild((e) => {return e.name == "Friendly Name"});
+            if (!textLabel){
+                textLabel = figma.createText();
+                textLabel.name = "Friendly Name";
+                styleFrame.appendChild(textLabel);
+            }
+            textLabel.characters = textIntent.friendlyName;
+            textLabel.textStyleId = styleMap[textIntent.friendlyName].id;
+            
             styleUsed[textIntent.friendlyName] = 1;
         } catch (e) {
             console.log(e);
