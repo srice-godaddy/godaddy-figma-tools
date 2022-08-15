@@ -8,7 +8,8 @@
     "figma"
   ],
   "menu": [
-    {"name": "Import Theme (VPN only)", "command": "importTheme"}
+    {"name": "Import Theme (VPN only)", "command": "importTheme"},
+    {"name": "Alias Styles", "command": "aliasStyles"}
 
   ]
 }

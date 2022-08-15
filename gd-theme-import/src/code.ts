@@ -9,9 +9,10 @@ switch(figma.command){
     });
     figma.ui.postMessage(figma.root.getPluginData('theme'));
     break;
-  default:
-    case "aliasStyles":
+  case "aliasStyles":
       aliasStyles();
+    break;
+  default:
     break;
 }
 
@@ -19,6 +20,7 @@ switch(figma.command){
 figma.ui.onmessage = async msg => {
   if (msg.type === 'create-styles') {
     await loadTheme(msg.themeData);
+    aliasStyles();
     //figma.root.setPluginData('theme', msg.themeData.ID.toString());
   }
   figma.closePlugin();
