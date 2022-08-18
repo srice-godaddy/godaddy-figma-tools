@@ -86,6 +86,7 @@ function friendlyName(name){
     .replace(/\/([a-tv-z])|^([a-tv-z])|\/(u)(?!x)|^(u)(?!x)/g, upperCase) // Convert from pascalCase to Title Case
     .replace(/ (Chosen|Focused|Hovered|Pressed|Dragged|Primary|Secondary|Tertiary|High Contrast|Highlight|Completed|Low Contrast|Info|Internal|Neutral|Passive|Success|Warning|Critical|Premium)/g, '/$1') // Add a / before state modifiers
     .replace(/Action\/Control/, 'ActionControl') //Put actionControl back together because it's its own thing.
+    .replace(/On\//, 'On ') // For "on" intents, put them in the same directory as regular
     .replace(/Text\/(Action|Caption|Heading|Input|Label|Paragraph|Title)/g, '$1') // Put text styles in a directory
     .replace(/^ /,'');
 }
@@ -100,9 +101,12 @@ function oldFriendlyName(name){
     .replace(/([A-Z])(?!olor)/g, ' $1') // Add a space before capital letters (unless Color)
     .replace('ux ','ux') // remove spaces after lowercase 'ux'
     .replace(/\/([a-tv-z])|^([a-tv-z])|\/(u)(?!x)|^(u)(?!x)/g, upperCase) // Convert from pascalCase to Title Case
-    .replace(/ (Chosen|Focused|Hovered|Primary|Secondary|Tertiary|High Contrast|Highlight|Completed|Low Contrast|Info|Internal|Neutral|Passive|Success|Warning|Critical)/g, '/$1') // Add a / before state modifiers
+    .replace(/ (Chosen|Focused|Hovered|Primary|Secondary|Tertiary|High Contrast|Highlight|Completed|Low Contrast|Info|Internal|Neutral|Passive|Success|Warning|Critical|Premium)/g, '/$1') // Add a / before state modifiers
     .replace(/Text (Action|Caption|Heading|Input|Label|Paragraph|Title)/g, '$1') // Put text styles in a directory
-    .replace(/^ /,'');
+    .replace(/([\-0-9]*)$/, '/$1') // Put numbers tagged on at the end into a directory
+    .replace(/Color\/([0-9])/, 'Color$1') //Undo the above when it's a color number
+    .replace(/^ /,'')
+    .replace(/\/$/,'');
 }
 
 
@@ -171,6 +175,12 @@ function transformThemeJson (themeData){
                         lineHeight: null,
                         font: 'GD Sherpa',
                     },
+                    unset:{
+                        size: true,
+                        weight: true,
+                        lineHeight: true,
+                        font: true
+                    }
                 };
             }
 
@@ -178,7 +188,7 @@ function transformThemeJson (themeData){
 
                 case "fontFamily":
                     intents.text[thisStyle.name].value.font = thisIntent.value[0].replace(/\"/g, '');
-
+                    intents.text[thisStyle.name].unset.font = false;
                     // Fix for proper font names
                     if (intents.text[thisStyle.name].value.font == "gdsherpa") {
                         intents.text[thisStyle.name].value.font = "GD Sherpa";
@@ -192,17 +202,18 @@ function transformThemeJson (themeData){
                         intents.text[thisStyle.name].value.size = parseFloat(thisIntent.value.replace('px', ''));
                     } else if (thisIntent.value.indexOf("%") >=0) {
                         intents.text[thisStyle.name].value.size = (parseFloat(thisIntent.value.replace(/%/, '')) / 100) * 16;
-                    }
-
-                    else {
+                    } else {
                         intents.text[thisStyle.name].value.size = parseFloat(thisIntent.value.replace(/r?em/, '')) * 16; // Assumes Rem's and Ems are 16-px based.
                     }
+                    intents.text[thisStyle.name].unset.size = false;
                     break;
                 case "fontWeight":
                     intents.text[thisStyle.name].value.weight = thisIntent.value;
+                    intents.text[thisStyle.name].unset.weight = false;
                     break;
                 case "lineHeight":
                     intents.text[thisStyle.name].value.lineHeight = (intents.text[thisStyle.name].value.lineHeight=="normal")? null : parseFloat(thisIntent.value);
+                    intents.text[thisStyle.name].unset.lineHeight = false;
                     break;
                 default:
                     break;
@@ -211,7 +222,7 @@ function transformThemeJson (themeData){
             console.log("Unknown Intent: "+thisStyle.name);
         }
     }
-    // Process through font sizes
+    // Process through font sizes and fix incomplete style (defaulting to ux.text)
 
     const textMultiplier = 1.125;
     const textKeys = Object.keys(intents.text);
@@ -220,10 +231,26 @@ function transformThemeJson (themeData){
     for (let key = 0; key < textKeys.length; key++)
     {
         let thisIntent = intents.text[textKeys[key]];
-        
+        if (thisIntent.unset.size){
+            thisIntent.value.size = intents.text["intents.ux.text"].value.size;
+            thisIntent.unset.size = false;
+        }
+        if (thisIntent.unset.weight){
+            thisIntent.value.weight = intents.text["intents.ux.text"].value.weight;
+            thisIntent.unset.weight = false;
+        }
+        if (thisIntent.unset.lineHeight){
+            thisIntent.value.lineHeight = intents.text["intents.ux.text"].value.lineHeight;
+            thisIntent.unset.lineHeight = false;
+        }
+        if (thisIntent.unset.font){
+            thisIntent.value.font = intents.text["intents.ux.text"].value.font;
+            thisIntent.unset.font = false;
+        }
+
+        // Iterate through size calculations
         if (thisIntent.name.indexOf("intents.ux.") >=0) // If this is non-component default text style
         {
-
             for (let i=0;i<=maxPositive;i++){
                 intents.text[thisIntent.name+(i)] = {
                     name: thisIntent.name+i,
@@ -401,8 +428,12 @@ export async function loadTheme(themeData) {
             {{"intentName":"${colorIntent.name}"}}`;
 
         // Add intent name (engineers)
-        await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
-        
+        try {
+            await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+        } catch(e) {
+            console.log("Roboto Failed to load");
+            console.log(e);
+        }
         let textFrame = styleFrame.findChild((e) => {return e.name == "Intent Names"});
         if(!textFrame){
             textFrame = figma.createFrame();
@@ -451,12 +482,12 @@ export async function loadTheme(themeData) {
             if (styleMap[oldFriendlyName(textIntent.name)]){
                 styleMap[oldFriendlyName(textIntent.name)].name = textIntent.friendlyName;
                 styleMap[textIntent.friendlyName] = styleMap[oldFriendlyName(textIntent.name)];
-            }
+            } 
             
             if (!styleMap[textIntent.friendlyName]) {
                 const textStyle = figma.createTextStyle();
                 textStyle.name = textIntent.friendlyName;
-    
+
                 styleMap[textIntent.friendlyName] = textStyle;
                 styleMap[textIntent.friendlyName].fontName = <FontName>({
                     family: textIntent.value.font,
@@ -488,8 +519,8 @@ export async function loadTheme(themeData) {
                 textLabel.name = "Intent Name";
                 styleFrame.appendChild(textLabel);
             }
-            textLabel.characters = textIntent.name;
             textLabel.textStyleId = styleMap[textIntent.friendlyName].id;
+            textLabel.characters = textIntent.name;
             
             // Add intent name (designers)
             textLabel = styleFrame.findChild((e) => {return e.name == "Friendly Name"});
@@ -498,11 +529,12 @@ export async function loadTheme(themeData) {
                 textLabel.name = "Friendly Name";
                 styleFrame.appendChild(textLabel);
             }
-            textLabel.characters = textIntent.friendlyName;
             textLabel.textStyleId = styleMap[textIntent.friendlyName].id;
-            
+            textLabel.characters = textIntent.friendlyName;
+
             styleUsed[textIntent.friendlyName] = 1;
         } catch (e) {
+            console.log("problem intent! "+ textKeys[i]);
             console.log(e);
         }
     }
@@ -512,7 +544,7 @@ export async function loadTheme(themeData) {
         if (paintStyle.name.indexOf("Intents") < 0 || styleUsed[paintStyle.name]) {
             continue;
         }
-
+        console.log(paintStyle.name + " removed");
         paintStyle.remove();
     }
 
@@ -521,6 +553,7 @@ export async function loadTheme(themeData) {
             continue;
         }
 
+        console.log(textStyle.name + " removed");
         textStyle.remove();
     }
 }

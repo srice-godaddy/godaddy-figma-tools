@@ -60,6 +60,7 @@ export async function aliasStyles(isFinal = true) {
                                 style: intentMap[styleData.aliasIntent].fontName.style
                             });
                         } catch (e){
+                            console.log("Alias font failed to load: " + styleData.aliasIntent);
                             console.log(e);
                         }
                         alias.fontName = <FontName>({
@@ -73,6 +74,7 @@ export async function aliasStyles(isFinal = true) {
                                 style: alias.fontName.style
                             });
                         } catch (e){
+                            console.log("Alias font failed to load: " + styleData.aliasIntent);
                             console.log(e);
                         }
                         alias.fontName = <FontName>({

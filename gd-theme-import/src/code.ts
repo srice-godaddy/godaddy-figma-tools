@@ -20,7 +20,7 @@ switch(figma.command){
 figma.ui.onmessage = async msg => {
   if (msg.type === 'create-styles') {
     await loadTheme(msg.themeData);
-    aliasStyles();
+    await aliasStyles();
     //figma.root.setPluginData('theme', msg.themeData.ID.toString());
   }
   figma.closePlugin();

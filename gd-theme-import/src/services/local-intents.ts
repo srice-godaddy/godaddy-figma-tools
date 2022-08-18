@@ -468,6 +468,21 @@ const localIntents = {
     "intents.uxTag.foregroundColor":"intents.ux.box.foregroundColor",
     "intents[`uxTag${expression}`].backgroundColor":"intents.ux[`feedback${expression}`].feedbackColor",
     "intents[`uxTag${expression}`].foregroundColor":"intents.ux[`feedback${expression}`].onFeedbackColor",
+    "headerGlobalUtilityButton.fontWeight":"intents.ux.text.FontWeight",
+    "headerNavigatePrimary.fontWeight":"intents.ux.textLabel.FontWeight",
+    "headerGlobalUtilityButton.foregroundColor":"intents.ux.action.foregroundColor",
+    "headerGlobalUtilityButton.backgroundColor":"intents.ux.action.backgroundColor",
+    "headerGlobalUtilityButton.borderColor":"intents.ux.action.borderColor",
+    "headerGlobalUtilityButtonHovered.foregroundColor":"intents.ux.actionHovered.foregroundColor",
+    "headerGlobalUtilityButtonHovered.backgroundColor":"intents.ux.actionHovered.backgroundColor",
+    "headerGlobalUtilityButtonHovered.borderColor":"intents.ux.actionHovered.borderColor",
+    "headerGlobalUtilityButtonFocused.foregroundColor":"intents.ux.actionFocused.foregroundColor",
+    "headerGlobalUtilityButtonFocused.backgroundColor":"intents.ux.actionFocused.backgroundColor",
+    "headerGlobalUtilityButtonFocused.borderColor":"intents.ux.actionFocused.borderColor",
+    "headerGlobalUtilityButtonChosen.foregroundColor":"intents.ux.actionChosen.foregroundColor",
+    "headerGlobalUtilityButtonChosen.backgroundColor":"intents.ux.actionChosen.backgroundColor",
+    "headerGlobalUtilityButtonChosen.borderColor":"intents.ux.actionChosen.borderColor",
+    "intents.globalNavTray.foregroundColor":"intents.ux.action.foregroundColor"
 }
 
 const expressions = [
