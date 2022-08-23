@@ -133,6 +133,15 @@ function transformThemeJson (themeData){
                     type: 'SOLID',
                     color: <RGB>(hexToRgb(thisIntent.value)),
                 });
+            if (!thisStyle.value.color){
+                thisStyle.value.color = <RGB>({
+                    r: 0,
+                    g: 0,
+                    b: 0
+                }),
+                thisStyle.value.opacity = 0;
+                console.log('INVALID COLOR: "' + thisIntent.value+' | Intent: '+thisIntent.name);
+            }
             thisStyle.friendlyName = friendlyName(thisStyle.name);
             intents.color.push(thisStyle);
         } else if (thisIntent.value.indexOf('rgba') >= 0) { // Colors with opacity values
@@ -147,6 +156,16 @@ function transformThemeJson (themeData){
                 }),
                 opacity: rgba.a,
             });
+            if (!thisStyle.value.color){
+                thisStyle.value.color = <RGB>({
+                    r: 0,
+                    g: 0,
+                    b: 0
+                }),
+                thisStyle.value.opacity = 0;
+                console.log('INVALID COLOR: "' + thisIntent.value+' | Intent: '+thisIntent.name);
+            }
+            thisStyle.friendlyName = friendlyName(thisStyle.name);
             thisStyle.friendlyName = friendlyName(thisStyle.name);
             intents.color.push(thisStyle);
          } else if (thisIntent.value.indexOf('transparent') >= 0) { // Transparent colors
@@ -400,7 +419,6 @@ export async function loadTheme(themeData) {
         
 
         // Handle Name Upgrades
-
         if (styleMap[oldFriendlyName(colorIntent.name)]){
             styleMap[oldFriendlyName(colorIntent.name)].name = colorIntent.friendlyName;
             styleMap[colorIntent.friendlyName] = styleMap[oldFriendlyName(colorIntent.name)];
