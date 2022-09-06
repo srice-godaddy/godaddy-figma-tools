@@ -88,7 +88,28 @@ function friendlyName(name){
     .replace(/Action\/Control/, 'ActionControl') //Put actionControl back together because it's its own thing.
     .replace(/On\//, 'On ') // For "on" intents, put them in the same directory as regular
     .replace(/Text\/(Action|Caption|Heading|Input|Label|Paragraph|Title)/g, '$1') // Put text styles in a directory
-    .replace(/^ /,'');
+    .replace(/^ /,'') // Remove Space before name
+    .replace(/  /g,' ') // Remove double spaces
+}
+
+let globalPrimitives = {}; // This is global so we can reset the recursion in our resolution function below if necessary.
+
+function resolvePrimitives(primitives, primitiveName){
+    const firstDot = primitiveName.indexOf(".");
+    if (firstDot > 0){
+        const slice = primitiveName.substring(firstDot+1);
+        // If there is more to dig into, recurse!
+        return resolvePrimitives(primitives[primitiveName.substring(0,firstDot)], slice);
+    } else {
+        if (primitives[primitiveName].type == "primitive") {
+            return resolvePrimitives(globalPrimitives, primitives[primitiveName].value);
+        }
+        else if (primitives[primitiveName]){
+            return primitives[primitiveName];
+        } else {
+            return null;
+        }
+    }
 }
 
 function oldFriendlyName(name){
@@ -105,8 +126,8 @@ function oldFriendlyName(name){
     .replace(/Text (Action|Caption|Heading|Input|Label|Paragraph|Title)/g, '$1') // Put text styles in a directory
     .replace(/([\-0-9]*)$/, '/$1') // Put numbers tagged on at the end into a directory
     .replace(/Color\/([0-9])/, 'Color$1') //Undo the above when it's a color number
-    .replace(/^ /,'')
-    .replace(/\/$/,'');
+    .replace(/^ /,'') // Remove space at the beginning
+    .replace(/\/$/,''); // remove "/" at the end
 }
 
 
@@ -117,6 +138,8 @@ function transformThemeJson (themeData){
     }
 
     const intentKeys = Object.keys(themeData.themes[0].data.root.values);
+    const primitives = themeData.themes[0].data.primitives;
+    globalPrimitives = primitives;
     for (const key in intentKeys) {
         const thisIntent = themeData.themes[0].data.root.values[intentKeys[key]];
         const thisStyle = {
@@ -125,7 +148,17 @@ function transformThemeJson (themeData){
             friendlyName: null,
             value: null,
         }
-        
+        if (thisIntent.type == "primitive"){
+            const primitive = resolvePrimitives(primitives, thisIntent.value.replace("primitives.",""));
+            if (primitive.color){
+                thisIntent.type = "static";
+                thisIntent.value = primitive.color;
+            } else {
+                console.log ("Primitive Not Supported: "+ thisIntent.value)
+                console.log (primitive);
+                continue;
+            }
+        }
         if (thisIntent.value.indexOf('#') >= 0) { // Colors with hex values
             // We've found a color!
             thisStyle.type = 'color';
