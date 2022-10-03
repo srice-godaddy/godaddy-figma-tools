@@ -3,8 +3,10 @@ import * as ReactDOM from 'react-dom';
 import './ui.css';
 
 let currentThemeId = null;
+let currentThemeEnv = null;
 onmessage = (event) => {
-    currentThemeId = event.data.pluginMessage;
+    currentThemeId = event.data.pluginMessage.theme;
+    currentThemeEnv = event.data.pluginMessage.themeEnv;
 };
 
 const tempTheme = `{
@@ -105,6 +107,7 @@ const tempTheme = `{
 
 class App extends React.Component {
     themeSelect: HTMLSelectElement
+    envSelect: HTMLSelectElement
 
     constructor() {
         // @ts-ignore
@@ -119,6 +122,13 @@ class App extends React.Component {
     themeSelectRef = (element: HTMLSelectElement) => {
         this.themeSelect = element;
     }
+    envSelectRef = (element: HTMLSelectElement) => {
+      this.envSelect = element;
+    }
+
+    onEnvSelect = () => {
+      // Do Nothing :D
+    }
 
     onCreate = () => {
         this.setState({
@@ -126,7 +136,7 @@ class App extends React.Component {
         });
 
         const themeId = this.themeSelect.value;
-        fetch('https://theme-api.uxp.godaddy.com/v1/themes?themeId=' + themeId) // TODO: Remove the need for this cors proxy!
+        fetch(`https://theme-api.uxp.godaddy.com/v1/themes?themeId=${themeId}`) 
             .then(response => response.json())
             .then(themeData => {
                 /*themeData = { themes:
@@ -136,10 +146,10 @@ class App extends React.Component {
             });
     }
 
-    componentDidMount() {
-        const self = this;
+    fetchThemes = () => {
+      const self = this;
 
-        fetch('https://theme-api.uxp.godaddy.com/v1/themes') // TODO: Remove the need for this cors proxy!
+      fetch(`https://theme-api.uxp.godaddy.com/v1/themes`)
             .then(response => response.json())
             .then(themes => {
                 self.setState({
@@ -174,6 +184,10 @@ class App extends React.Component {
             });
     }
 
+    componentDidMount() {
+        this.fetchThemes();
+    }
+
     render() {
         let content = <p className='loading'>Loading...</p>;
 
@@ -186,6 +200,12 @@ class App extends React.Component {
                         // @ts-ignore
                         this.state.themes.map((value, index) => <option key={ index } value={ value.id }>{ value.alias }</option>)
                     }
+                </select>
+                <p>Pick an environment (currently does nothing):</p>
+                <select name='env' id='env' ref={ this.envSelectRef } onChange={this.onEnvSelect}>
+                  <option value="prod">Production</option>
+                  <option value="test">Test</option>
+                  <option value="dev">Dev</option>
                 </select>
                 <div className='button-container'>
                     <button id="create" onClick={this.onCreate} className='primary'>Select Theme</button>

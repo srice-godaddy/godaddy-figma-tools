@@ -86,13 +86,32 @@ function friendlyName(name){
     .replace(/\/([a-tv-z])|^([a-tv-z])|\/(u)(?!x)|^(u)(?!x)/g, upperCase) // Convert from pascalCase to Title Case
     .replace(/ (Chosen|Focused|Hovered|Pressed|Dragged|Primary|Secondary|Tertiary|High Contrast|Highlight|Completed|Low Contrast|Info|Internal|Neutral|Passive|Success|Warning|Critical|Premium)/g, '/$1') // Add a / before state modifiers
     .replace(/Action\/Control/, 'ActionControl') //Put actionControl back together because it's its own thing.
+    .replace(/Action\/Option/, 'ActionOption') //Put actionOption back together because it's its own thing.
     .replace(/On\//, 'On ') // For "on" intents, put them in the same directory as regular
     .replace(/Text\/(Action|Caption|Heading|Input|Label|Paragraph|Title)/g, '$1') // Put text styles in a directory
     .replace(/^ /,'') // Remove Space before name
     .replace(/  /g,' ') // Remove double spaces
 }
 
+function generateUUID() { // Public Domain/MIT
+    var d = new Date().getTime();//Timestamp
+    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16;//random number between 0 and 16
+        if(d > 0){//Use timestamp until depleted
+            r = (d + r)%16 | 0;
+            d = Math.floor(d/16);
+        } else {//Use microseconds since page-load if supported
+            r = (d2 + r)%16 | 0;
+            d2 = Math.floor(d2/16);
+        }
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
+
 let globalPrimitives = {}; // This is global so we can reset the recursion in our resolution function below if necessary.
+
+const thisUUID = generateUUID(); // Generate a UUID for this run of the plugin
 
 function resolvePrimitives(primitives, primitiveName){
     const firstDot = primitiveName.indexOf(".");
@@ -150,9 +169,9 @@ function transformThemeJson (themeData){
         }
         if (thisIntent.type == "primitive"){
             const primitive = resolvePrimitives(primitives, thisIntent.value.replace("primitives.",""));
-            if (primitive.color){
+            if (primitive){
                 thisIntent.type = "static";
-                thisIntent.value = primitive.color;
+                thisIntent.value = primitive;
             } else {
                 console.log ("Primitive Not Supported: "+ thisIntent.value)
                 console.log (primitive);
@@ -349,6 +368,7 @@ function createFramesForThemes(themeArray, parent){
         newFrame.itemSpacing = 8;
         parent.appendChild(newFrame);
     }
+    newFrame.setPluginData('last-edited', thisUUID);
     themeArray.shift();
     if (themeArray.length > 0) {
         return createFramesForThemes(themeArray, newFrame);
@@ -392,6 +412,7 @@ export async function loadTheme(themeData) {
     }
     const intentsFrame = intentsPage.findChildren((e)=> {return e.name == "Theme" })[0];
 
+    // only reset when new
     if (intentsFrame.findChildren((e)=> {return e.name == "Color Intents" }).length == 0){
         const newFrame = figma.createFrame();
         newFrame.name = "Color Intents";
@@ -416,9 +437,38 @@ export async function loadTheme(themeData) {
         newFrame.paddingBottom = 64;
         intentsFrame.appendChild(newFrame);
     }
+    
+    /* OR Reset always! 
+    intentsFrame.findChildren((e)=> {return e.name == "Color Intents" })[0].remove();
+    const newColorFrame = figma.createFrame();
+    newColorFrame.name = "Color Intents";
+    newColorFrame.itemSpacing = 24;
+    newColorFrame.layoutMode = "HORIZONTAL";
+    newColorFrame.primaryAxisSizingMode = "AUTO"; 
+    newColorFrame.counterAxisSizingMode = "AUTO";
+    newColorFrame.paddingTop = 64;
+    newColorFrame.paddingRight = 64;
+    newColorFrame.paddingBottom = 64;
+    intentsFrame.appendChild(newColorFrame);
+
+    intentsFrame.findChildren((e)=> {return e.name == "Text Intents" })[0].remove();
+    const newTextFrame = figma.createFrame();
+    newTextFrame.name = "Text Intents";
+    newTextFrame.itemSpacing = 24;
+    newTextFrame.layoutMode = "HORIZONTAL";
+    newTextFrame.primaryAxisSizingMode = "AUTO"; 
+    newTextFrame.counterAxisSizingMode = "AUTO"; 
+    newTextFrame.paddingTop = 64;
+    newTextFrame.paddingRight = 64;
+    newTextFrame.paddingBottom = 64;
+    intentsFrame.appendChild(newTextFrame);
+    /**/
 
     const textIntentsFrame = intentsFrame.findChildren((e)=> {return e.name == "Text Intents" })[0];
     const colorIntentsFrame = intentsFrame.findChildren((e)=> {return e.name == "Color Intents" })[0];
+
+    textIntentsFrame.setPluginData('last-edited', thisUUID);
+    colorIntentsFrame.setPluginData('last-edited', thisUUID);
 
     // Load styles
     for (const paintStyle of paintStyles) {
@@ -449,7 +499,7 @@ export async function loadTheme(themeData) {
             styleFrame.appendChild(colorFrame);
         }
 
-        
+        colorFrame.setPluginData('last-edited', thisUUID);
 
         // Handle Name Upgrades
         if (styleMap[oldFriendlyName(colorIntent.name)]){
@@ -497,6 +547,8 @@ export async function loadTheme(themeData) {
             styleFrame.appendChild(textFrame);
         }
 
+        textFrame.setPluginData('last-edited', thisUUID);
+
         let textLabel = textFrame.findChild((e) => {return e.name == "Intent Name"});
         if (!textLabel){
             textLabel = figma.createText();
@@ -506,7 +558,8 @@ export async function loadTheme(themeData) {
         }
         textLabel.characters = colorIntent.name;
         textLabel.fills = textColor(colorIntent.value);
-        
+        textLabel.setPluginData('last-edited', thisUUID);
+
         // Add intent name (designers)
         textLabel = textFrame.findChild((e) => {return e.name == "Friendly Name"});
         if (!textLabel){
@@ -516,6 +569,7 @@ export async function loadTheme(themeData) {
             textLabel.name = "Friendly Name";
             textFrame.appendChild(textLabel);
         }
+        textLabel.setPluginData('last-edited', thisUUID);
         textLabel.fills = textColor(colorIntent.value);
         styleUsed[colorIntent.friendlyName] = 1;
     }
@@ -526,7 +580,6 @@ export async function loadTheme(themeData) {
         const textIntent = intents.text[textKeys[i]];
         const fontStyle = getFontType(textIntent.value.weight);
         try {
-            await figma.loadFontAsync({ family: textIntent.value.font, style: fontStyle });
             await figma.loadFontAsync({ family: "Inter", style: "Regular" }); // Load Figma's default font as a backup
             
             //Upgrade layer
@@ -563,6 +616,10 @@ export async function loadTheme(themeData) {
             const styleFrame = createFramesForThemes(framesArray,textIntentsFrame);
             styleFrame.itemSpacing = 8;
 
+            styleFrame.setPluginData('last-edited', thisUUID);
+
+            await figma.loadFontAsync(styleMap[textIntent.friendlyName].fontName);
+
             // Add intent name (engineers)
             let textLabel = styleFrame.findChild((e) => {return e.name == "Intent Name"});
             if (!textLabel){
@@ -572,6 +629,7 @@ export async function loadTheme(themeData) {
             }
             textLabel.textStyleId = styleMap[textIntent.friendlyName].id;
             textLabel.characters = textIntent.name;
+            textLabel.setPluginData('last-edited', thisUUID);
             
             // Add intent name (designers)
             textLabel = styleFrame.findChild((e) => {return e.name == "Friendly Name"});
@@ -580,6 +638,7 @@ export async function loadTheme(themeData) {
                 textLabel.name = "Friendly Name";
                 styleFrame.appendChild(textLabel);
             }
+            textLabel.setPluginData('last-edited', thisUUID);
             textLabel.textStyleId = styleMap[textIntent.friendlyName].id;
             textLabel.characters = textIntent.friendlyName;
 
@@ -606,5 +665,14 @@ export async function loadTheme(themeData) {
 
         console.log(textStyle.name + " removed");
         textStyle.remove();
+    }
+
+    // Remove frames that have removed intents.
+    const framesToClean = intentsFrame.findAll(n => n.getPluginData('last-edited' ) != thisUUID);
+    for (var i=0; i<framesToClean.length; i++){
+        if(!framesToClean[i].removed){
+            console.log(framesToClean[i].name + " frame removed");
+            framesToClean[i].remove();
+        }
     }
 }

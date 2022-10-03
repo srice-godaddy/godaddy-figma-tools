@@ -1,7 +1,0 @@
-{
-  "name": "Intentify",
-  "id": "948277913618756046",
-  "api": "1.0.0",
-  "main": "dist/code.js",
-  "ui": "dist/ui.html"
-}

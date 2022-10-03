@@ -7,7 +7,10 @@ switch(figma.command){
       width: 464,
       height: 276,
     });
-    figma.ui.postMessage(figma.root.getPluginData('theme'));
+    figma.ui.postMessage({
+      themeId: figma.root.getPluginData('theme'),
+      themeEnv: figma.root.getPluginData('themeEnv')
+    });
     break;
   case "aliasStyles":
       aliasStyles();
@@ -21,7 +24,12 @@ figma.ui.onmessage = async msg => {
   if (msg.type === 'create-styles') {
     await loadTheme(msg.themeData);
     await aliasStyles();
-    //figma.root.setPluginData('theme', msg.themeData.ID.toString());
+    try {
+      figma.root.setPluginData('theme', msg.themeData.ID.toString());
+      figma.root.setPluginData('themeEnv', msg.themeEnv);
+    } catch(e) {
+      console.log(e);
+    }
   }
   figma.closePlugin();
 };
